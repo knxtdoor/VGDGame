@@ -12,20 +12,27 @@ public class PlayerController : MonoBehaviour
     private InputAction moveAction;
 
     private CharacterController characterController;
+    private Rigidbody rb;
+    public float playerMoveSpeed = .05f;
+
     // Start is called before the first frame update
     void Start()
     {
         moveAction = actions.FindActionMap("Player").FindAction("Move");
         characterController = gameObject.AddComponent<CharacterController>();
+        rb = gameObject.GetComponent<Rigidbody>();
 
     }
 
     // Update is called once per frame
     void Update()
     {
-        Vector2 moveVec = moveAction.ReadValue<Vector2>();
-        Debug.Log(moveVec);
-        characterController.Move((Vector3)moveVec);
+
+        Vector2 inputVec = moveAction.ReadValue<Vector2>();
+        Vector3 moveVec = new Vector3(inputVec.x * playerMoveSpeed, rb.velocity.y, inputVec.y * playerMoveSpeed);
+        // characterController.Move(moveVec * playerMoveSpeed);
+        rb.velocity = moveVec;
+
 
     }
 
