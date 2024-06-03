@@ -1,3 +1,4 @@
+using System;
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
@@ -22,17 +23,28 @@ public class EnemyController : MonoBehaviour
     }
 
     // Update is called once per frame
-    void Update()
+    void FixedUpdate()
     {
         //Move
         transform.position = Vector3.MoveTowards(transform.position, moveTo, speed * Time.deltaTime);
 
-        //check if player is near
-        if (Vector3.Distance(enemy.position, player.position) < 5)
+        Vector3 directionOfPlayer = player.position - transform.position;
+        float angleBetween = Vector3.Angle(transform.forward, directionOfPlayer);
+        float playerDistance = Vector3.Distance(transform.position, player.position);
+        if (((angleBetween > 0 && angleBetween < 60) || (angleBetween > 300 && angleBetween < 360)) && playerDistance < 5)
         {
-            print("located");
-            hunting = true;
+            //Player is in cone of vision, now check for obstruction
+            RaycastHit rayHit;
+            if (Physics.Raycast(transform.position, directionOfPlayer, out rayHit, 5))
+            {
+                if (rayHit.collider.gameObject.tag == "Player")
+                {
+                    Debug.Log("Player in field of vision");
+                    hunting = true;
+                }
+            }
         }
+
 
         // start movng backwards when at a point
         if (!hunting)
