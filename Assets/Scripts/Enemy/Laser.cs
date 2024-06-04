@@ -16,7 +16,7 @@ public class Laser : MonoBehaviour
     void FixedUpdate()
     {
         RaycastHit hit;
-        if (Physics.Raycast(transform.position, transform.forward, out hit))
+        if (Physics.Raycast(transform.position, transform.forward, out hit, 5))
         {
             if (hit.collider)
             {
@@ -25,7 +25,7 @@ public class Laser : MonoBehaviour
         }
         else
         {
-            lr.SetPosition(1, new Vector3(0, 0, 5000));
+            lr.SetPosition(1, new Vector3(0, 0, 5));
         }
 
     }
