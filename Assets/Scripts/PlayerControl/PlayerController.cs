@@ -40,4 +40,12 @@ public class PlayerController : MonoBehaviour
     {
         actions.FindActionMap("Player").Enable();
     }
+
+    void OnCollisionEnter(Collision collision)
+    {
+        if (collision.gameObject.tag == "Enemy")
+        {
+            gameObject.SetActive(false);
+        }
+    }
 }
