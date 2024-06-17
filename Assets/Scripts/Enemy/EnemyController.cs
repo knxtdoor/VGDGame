@@ -1,25 +1,33 @@
+
 using System;
-using System.Collections;
-using System.Collections.Generic;
 using UnityEngine;
 
 public class EnemyController : MonoBehaviour
 {
 
     public float speed = 1f;
+    public float rotateSpeed = 220f;
     public Transform enemy;
     public Transform player;
 
     private Vector3 pointA = new Vector3(0, 1, 15); //location to move from
     private Vector3 pointB = new Vector3(10, 1, 15); //location to move towrds
     private Vector3 moveTo;
+    private Vector3 lookTo;
 
-    private bool hunting = false;
+    private GameObject huntTarget = null;
+
+
+    private Mesh mesh;
+
+    public float visionRange = 5;
+    public float FOV = 120;
 
     // Start is called before the first frame update
     void Start()
     {
         moveTo = pointB;
+        lookTo = pointB;
     }
 
     // Update is called once per frame
@@ -27,27 +35,13 @@ public class EnemyController : MonoBehaviour
     {
         //Move
         transform.position = Vector3.MoveTowards(transform.position, moveTo, speed * Time.deltaTime);
+        transform.rotation = Quaternion.RotateTowards(transform.rotation, Quaternion.LookRotation(lookTo - this.transform.position), rotateSpeed * Time.deltaTime);
 
-        Vector3 directionOfPlayer = player.position - transform.position;
-        float angleBetween = Vector3.Angle(transform.forward, directionOfPlayer);
-        float playerDistance = Vector3.Distance(transform.position, player.position);
-        if (((angleBetween > 0 && angleBetween < 60) || (angleBetween > 300 && angleBetween < 360)) && playerDistance < 5)
-        {
-            //Player is in cone of vision, now check for obstruction
-            RaycastHit rayHit;
-            if (Physics.Raycast(transform.position, directionOfPlayer, out rayHit, 5))
-            {
-                if (rayHit.collider.gameObject.tag == "Player")
-                {
-                    Debug.Log("Player in field of vision");
-                    hunting = true;
-                }
-            }
-        }
+        CheckForTarget();
 
 
         // start movng backwards when at a point
-        if (!hunting)
+        if (huntTarget == null)
         {
             if (transform.position == moveTo)
             {
@@ -55,16 +49,44 @@ public class EnemyController : MonoBehaviour
                 if (moveTo == pointB)
                 {
                     moveTo = pointA; // Move towards the start position
+                    lookTo = pointA;
                 }
                 else
                 {
                     moveTo = pointB;   // Move towards the end position
+                    lookTo = pointB;
+
                 }
             }
         }
         else
         {
-            moveTo = player.position;
+            moveTo = huntTarget.transform.position;
+            lookTo = huntTarget.transform.position;
         }
+    }
+
+
+    void CheckForTarget()
+    {
+        float degreeIncrement = Mathf.PI / 8;
+        float facingDirection = Mathf.Atan2(this.transform.forward.z, this.transform.forward.x);
+        float FOVrad = Mathf.Deg2Rad * FOV;
+
+        for (float i = facingDirection - (FOVrad / 2); i < facingDirection + (FOVrad / 2); i += degreeIncrement)
+        {
+            Vector3 currDirection = new Vector3(Mathf.Cos(i), 0, Mathf.Sin(i));
+            RaycastHit rayHit;
+            if (Physics.Raycast(transform.position, currDirection, out rayHit, visionRange))
+            {
+                string collisionTag = rayHit.collider.gameObject.tag;
+                if (collisionTag == "Player" || collisionTag == "Hologram")
+                {
+                    Debug.Log("Player/Hologram in field of vision");
+                    huntTarget = rayHit.collider.gameObject;
+                }
+            }
+        }
+
     }
 }
