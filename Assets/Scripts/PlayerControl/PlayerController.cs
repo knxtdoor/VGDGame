@@ -19,12 +19,16 @@ public class PlayerController : MonoBehaviour
     public float sprintSpeed = 4.5f;
     public float walkSpeed = 1.5f;
 
+    private Animator animator;
+
     // Start is called before the first frame update
     void Start()
     {
         moveAction = actions.FindActionMap("Player").FindAction("Move");
         characterController = gameObject.AddComponent<CharacterController>();
         rb = gameObject.GetComponent<Rigidbody>();
+
+        animator = GetComponent<Animator>();
 
     }
 
@@ -40,6 +44,7 @@ public class PlayerController : MonoBehaviour
         // characterController.Move(moveVec * playerMoveSpeed);
         rb.velocity = moveVec;
 
+        animator.SetFloat("Speed", new Vector3(rb.velocity.x, 0, rb.velocity.z).magnitude);
 
     }
 
