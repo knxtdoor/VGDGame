@@ -22,6 +22,7 @@ public class PlayerController : MonoBehaviour
     public float walkSpeed = 1.5f;
 
     public GameObject holoPrefab;
+    public GameObject cameraObj;
     private HologramController activeHolo;
 
     // Start is called before the first frame update
@@ -39,7 +40,7 @@ public class PlayerController : MonoBehaviour
     {
         //update player speed
         getSpeed();
-        
+
 
         Vector2 inputVec = moveAction.ReadValue<Vector2>();
         Vector3 moveVec = new Vector3(inputVec.x * playerMoveSpeed, rb.velocity.y, inputVec.y * playerMoveSpeed);
@@ -69,20 +70,26 @@ public class PlayerController : MonoBehaviour
     void OnCollisionEnter(Collision collision)
     {
         Debug.Log(collision.gameObject.name);
+
         if (collision.gameObject.tag == "Enemy")
         {
+            cameraObj.transform.parent = null;
             gameObject.SetActive(false);
         }
     }
 
-    void getSpeed() {
-        if (Input.GetKey(KeyCode.LeftShift)) {
+    void getSpeed()
+    {
+        if (Input.GetKey(KeyCode.LeftShift))
+        {
             playerMoveSpeed = sprintSpeed;
         }
-        else if (Input.GetKey(KeyCode.LeftControl)) {
+        else if (Input.GetKey(KeyCode.LeftControl))
+        {
             playerMoveSpeed = walkSpeed;
         }
-        else {
+        else
+        {
             playerMoveSpeed = baseSpeed;
         }
     }

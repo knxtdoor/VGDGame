@@ -1,5 +1,7 @@
 using UnityEngine;
+using UnityEngine.InputSystem;
 using System.Collections;
+using System.Collections.Generic;
 
 public class ThirdPersonCamera : MonoBehaviour
 {
@@ -10,32 +12,49 @@ public class ThirdPersonCamera : MonoBehaviour
     private Transform desiredPose;			// the desired pose for the camera, specified by a transform in the game
     public GameObject player;
 
-    protected Vector3 currentPositionCorrectionVelocity;
-    //protected Vector3 currentFacingCorrectionVelocity;
-    //protected float currentFacingAngleCorrVel;
-    protected Quaternion quaternionDeriv;
 
-    protected float angle;
+
+    public InputActionAsset actions;
+    public float sensitivity = 1;
+    private InputAction mouse;
+
+    private float rotateHorizontal = 0;
+    private float rotateVertical = 0;
 
 
     void Start()
     {
         this.desiredPose = player.transform.Find("CameraPos");
+        mouse = actions.FindActionMap("Player").FindAction("Look");
+        Cursor.lockState = CursorLockMode.Locked;
     }
+
+    void Update()
+    {
+
+    }
+    void FixedUpdate()
+    {
+
+        // transform.position = player.transform.position + 5;
+        Vector2 mouseRead = mouse.ReadValue<Vector2>();
+        rotateHorizontal = mouseRead.x;
+        rotateVertical = mouseRead.y;
+        transform.RotateAround(player.transform.position, -Vector3.up, rotateHorizontal * sensitivity); //use transform.Rotate(-transform.up * rotateHorizontal * sensitivity) instead if you dont want the camera to rotate around the player
+        transform.RotateAround(player.transform.position, transform.right, rotateVertical * sensitivity); // again, use transform.Rotate(transform.right * rotateVertical * sensitivity) if you don't want the camera to rotate around the player
+
+
+    }
+
 
     void LateUpdate()
     {
-
         if (desiredPose != null)
         {
-            transform.position = Vector3.SmoothDamp(transform.position, desiredPose.position, ref currentPositionCorrectionVelocity, positionSmoothTime, positionMaxSpeed, Time.deltaTime);
-
-            var targForward = desiredPose.forward;
-            //var targForward = (target.position - this.transform.position).normalized;
-
-            transform.rotation = QuaternionUtil.SmoothDamp(transform.rotation,
-                Quaternion.LookRotation(targForward, Vector3.up), ref quaternionDeriv, rotationSmoothTime);
+            // transform.rotation = desiredPose.rotation;
+            // transform.position = desiredPose.transform.position;
 
         }
     }
+
 }
