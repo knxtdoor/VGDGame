@@ -1284,6 +1284,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   player: {fileID: 1427373905}
+<<<<<<< HEAD
   actions: {fileID: -944628639613478452, guid: cac7a74518c4f4d4fb96342ab43aaba1, type: 3}
   sensitivity: 0.4
 --- !u!1 &987281669
@@ -1317,6 +1318,8 @@ Transform:
   m_Father: {fileID: 1427373909}
   m_RootOrder: 0
   m_LocalEulerAnglesHint: {x: 30, y: 0, z: 0}
+=======
+>>>>>>> visionConeAndHolo
 --- !u!1001 &1094836185
 PrefabInstance:
   m_ObjectHideFlags: 0
@@ -1384,6 +1387,7 @@ Transform:
   m_CorrespondingSourceObject: {fileID: 3522277016217855375, guid: 79d4641e784686a4e8d56a04530b5fc5, type: 3}
   m_PrefabInstance: {fileID: 3522277014958758618}
   m_PrefabAsset: {fileID: 0}
+<<<<<<< HEAD
   m_GameObject: {fileID: 1427373905}
   m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
   m_LocalPosition: {x: 2.01, y: 1.13, z: 5.79}
@@ -1430,6 +1434,8 @@ Rigidbody:
   m_Interpolate: 0
   m_Constraints: 112
   m_CollisionDetection: 0
+=======
+>>>>>>> visionConeAndHolo
 --- !u!1001 &1430927272
 PrefabInstance:
   m_ObjectHideFlags: 0
@@ -2117,6 +2123,7 @@ PrefabInstance:
   m_Modification:
     m_TransformParent: {fileID: 0}
     m_Modifications:
+<<<<<<< HEAD
     - target: {fileID: 1784448403925604665, guid: 91fcfc69730b9c7468d5ddf2b61f50ee, type: 3}
       propertyPath: m_Materials.Array.data[0]
       value: 
@@ -2166,6 +2173,9 @@ PrefabInstance:
       value: 0
       objectReference: {fileID: 0}
     - target: {fileID: 1784448403925604668, guid: 91fcfc69730b9c7468d5ddf2b61f50ee, type: 3}
+=======
+    - target: {fileID: 2579891530348692907, guid: c4a396aaa0d98874684b07730343f22e, type: 3}
+>>>>>>> visionConeAndHolo
       propertyPath: m_Name
       value: Crate
       objectReference: {fileID: 0}
