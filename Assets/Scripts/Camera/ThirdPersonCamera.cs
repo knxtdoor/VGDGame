@@ -5,56 +5,71 @@ using System.Collections.Generic;
 
 public class ThirdPersonCamera : MonoBehaviour
 {
-    public float positionSmoothTime = 1f;		// a public variable to adjust smoothing of camera motion
-    public float rotationSmoothTime = 1f;
-    public float positionMaxSpeed = 50f;        //max speed camera can move
-    public float rotationMaxSpeed = 50f;
-    private Transform desiredPose;			// the desired pose for the camera, specified by a transform in the game
     public GameObject player;
 
-
-
     public InputActionAsset actions;
-    public float sensitivity = 1;
     private InputAction mouse;
+    public float sensitivity = 1;
 
-    private float rotateHorizontal = 0;
     private float rotateVertical = 0;
+
+    private float cameraDistance = 5;
 
 
     void Start()
     {
-        this.desiredPose = player.transform.Find("CameraPos");
         mouse = actions.FindActionMap("Player").FindAction("Look");
         Cursor.lockState = CursorLockMode.Locked;
     }
 
-    void Update()
-    {
-
-    }
     void FixedUpdate()
     {
 
-        // transform.position = player.transform.position + 5;
+
+        //Read mouse input for camera rotation
         Vector2 mouseRead = mouse.ReadValue<Vector2>();
-        rotateHorizontal = mouseRead.x;
         rotateVertical = mouseRead.y;
-        transform.RotateAround(player.transform.position, -Vector3.up, rotateHorizontal * sensitivity); //use transform.Rotate(-transform.up * rotateHorizontal * sensitivity) instead if you dont want the camera to rotate around the player
-        transform.RotateAround(player.transform.position, transform.right, rotateVertical * sensitivity); // again, use transform.Rotate(transform.right * rotateVertical * sensitivity) if you don't want the camera to rotate around the player
 
+        //Rotate camera based on mouse input, ignoring collisions
+        transform.RotateAround(player.transform.position, transform.right, rotateVertical * sensitivity);
 
-    }
-
-
-    void LateUpdate()
-    {
-        if (desiredPose != null)
+        // Limit x rotation to prevent rotating around characters head or feet
+        float xAngle = transform.eulerAngles.x;
+        if (xAngle > 180)
         {
-            // transform.rotation = desiredPose.rotation;
-            // transform.position = desiredPose.transform.position;
+            xAngle -= 360;
+        }
+        float angleLimit = 65;
+        if (xAngle < -angleLimit)
+        {
+            transform.RotateAround(player.transform.position, transform.right, -angleLimit - xAngle);
+        }
+        else if (xAngle > angleLimit)
+        {
+            transform.RotateAround(player.transform.position, transform.right, angleLimit - xAngle);
 
         }
+
+
+        //Get vector between player and new camera location, normalized
+        Vector3 rayDir = (this.transform.position - player.transform.position).normalized;
+
+        //Raycast between the player and the camera
+        RaycastHit hit;
+        if (Physics.Raycast(player.transform.position, rayDir, out hit, cameraDistance))
+        {
+            //If there is an object in the way, place the camera at the collision point
+            this.transform.position = player.transform.position + (rayDir * hit.distance);
+        }
+        else
+        {
+            //Otherwise place it at max camera distance
+            this.transform.position = player.transform.position + (rayDir * cameraDistance);
+
+        }
+
     }
+
+
 
 }

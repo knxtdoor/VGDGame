@@ -1283,10 +1283,6 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: f691c4f72d875364683635e1b53f125f, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  positionSmoothTime: 0.4
-  rotationSmoothTime: 0.4
-  positionMaxSpeed: 50
-  rotationMaxSpeed: 50
   player: {fileID: 1427373905}
   actions: {fileID: -944628639613478452, guid: cac7a74518c4f4d4fb96342ab43aaba1, type: 3}
   sensitivity: 0.4
