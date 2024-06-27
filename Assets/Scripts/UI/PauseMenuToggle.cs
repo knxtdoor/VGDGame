@@ -14,22 +14,30 @@ public class PauseMenuToggle : MonoBehaviour
         canvasGroup = GetComponent<CanvasGroup>();
     }
 
-    public void Update() {
-        if (Input.GetKeyUp (KeyCode.Escape)) {
-            if (canvasGroup.interactable) {
+    public void Update()
+    {
+        if (Input.GetKeyUp(KeyCode.Escape))
+        {
+            if (canvasGroup.interactable)
+            {
                 canvasGroup.interactable = false;
                 canvasGroup.blocksRaycasts = false;
                 canvasGroup.alpha = 0f;
                 Time.timeScale = 1f;
-            } else {
+                Cursor.lockState = CursorLockMode.Locked;
+            }
+            else
+            {
                 canvasGroup.interactable = true;
                 canvasGroup.blocksRaycasts = true;
                 canvasGroup.alpha = 1f;
                 Time.timeScale = 0f;
+                Cursor.lockState = CursorLockMode.None;
             }
-        } 
+        }
     }
-    public void unPause() {
+    public void unPause()
+    {
         canvasGroup.interactable = false;
         canvasGroup.blocksRaycasts = false;
         canvasGroup.alpha = 0f;
