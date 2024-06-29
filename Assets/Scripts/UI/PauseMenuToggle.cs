@@ -20,27 +20,31 @@ public class PauseMenuToggle : MonoBehaviour
         {
             if (canvasGroup.interactable)
             {
-                canvasGroup.interactable = false;
-                canvasGroup.blocksRaycasts = false;
-                canvasGroup.alpha = 0f;
-                Time.timeScale = 1f;
-                Cursor.lockState = CursorLockMode.Locked;
+                Unpause();
             }
             else
             {
-                canvasGroup.interactable = true;
-                canvasGroup.blocksRaycasts = true;
-                canvasGroup.alpha = 1f;
-                Time.timeScale = 0f;
-                Cursor.lockState = CursorLockMode.None;
+                Pause();
             }
         }
     }
-    public void unPause()
+    public void Unpause()
     {
         canvasGroup.interactable = false;
         canvasGroup.blocksRaycasts = false;
         canvasGroup.alpha = 0f;
         Time.timeScale = 1f;
+        Cursor.lockState = CursorLockMode.Locked;
     }
+
+    public void Pause()
+    {
+        canvasGroup.interactable = true;
+        canvasGroup.blocksRaycasts = true;
+        canvasGroup.alpha = 1f;
+        Time.timeScale = 0f;
+        Cursor.lockState = CursorLockMode.None;
+    }
+
+
 }

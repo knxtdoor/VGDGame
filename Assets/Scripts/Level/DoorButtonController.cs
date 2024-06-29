@@ -28,19 +28,8 @@ public class DoorButtonController : MonoBehaviour
         }
 
     }
-
-    void OnCollisionEnter(Collision c)
+    public void SetPlayerInRange(bool state)
     {
-        if (c.gameObject.tag == "Player")
-        {
-            playerInRange = true;
-        }
-    }
-    void OnCollisionExit(Collision c)
-    {
-        if (c.gameObject.tag == "Player")
-        {
-            playerInRange = false;
-        }
+        this.playerInRange = state;
     }
 }
