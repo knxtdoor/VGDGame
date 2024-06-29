@@ -3,16 +3,11 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
-[RequireComponent(typeof(CanvasGroup))]
 public class PauseMenuToggle : MonoBehaviour
 {
 
     public CanvasGroup canvasGroup;
 
-    void Awake()
-    {
-        canvasGroup = GetComponent<CanvasGroup>();
-    }
 
     public void Update()
     {
@@ -30,6 +25,7 @@ public class PauseMenuToggle : MonoBehaviour
     }
     public void Unpause()
     {
+        Debug.Log("Unpause");
         canvasGroup.interactable = false;
         canvasGroup.blocksRaycasts = false;
         canvasGroup.alpha = 0f;
