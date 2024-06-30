@@ -1,7 +1,15 @@
 
 using System;
 using UnityEngine;
+using UnityEngine.AI;
 
+public enum EnemyState
+{
+    Patrolling,
+    Chasing
+}
+
+[RequireComponent(typeof(NavMeshAgent))]
 public class EnemyController : MonoBehaviour
 {
 
@@ -17,55 +25,93 @@ public class EnemyController : MonoBehaviour
 
     private GameObject huntTarget = null;
 
-
     private Mesh mesh;
 
-    public float visionRange = 5;
-    public float FOV = 120;
+    public float visionRange = 5f;
+    public float FOV = 120f;
+
+    private NavMeshAgent navMeshAgent;
+    private EnemyState currentState;
+    private VelocityReporter velocityReporter;
+    public float maxLookaheadTime = 2.0f;
 
     // Start is called before the first frame update
     void Start()
     {
+        navMeshAgent = GetComponent<NavMeshAgent>();
+        navMeshAgent.speed = speed;
+        currentState = EnemyState.Patrolling;
         moveTo = pointB;
         lookTo = pointB;
+        SetNextPatrolPoint();
+        velocityReporter = player.GetComponent<VelocityReporter>();
     }
 
     // Update is called once per frame
     void FixedUpdate()
     {
-        //Move
-        transform.position = Vector3.MoveTowards(transform.position, moveTo, speed * Time.deltaTime);
-        transform.rotation = Quaternion.RotateTowards(transform.rotation, Quaternion.LookRotation(lookTo - this.transform.position), rotateSpeed * Time.deltaTime);
+        switch (currentState)
+        {
+            case EnemyState.Patrolling:
+                Patrol();
+                break;
+            case EnemyState.Chasing:
+                Chase();
+                break;
+        }
+    }
+
+    private void SetNextPatrolPoint()
+    {
+        if (moveTo == pointB)
+        {
+            moveTo = pointA; // Move towards the start position
+            lookTo = pointA;
+        }
+        else
+        {
+            moveTo = pointB; // Move towards the end position
+            lookTo = pointB;
+
+        }
+
+        navMeshAgent.SetDestination(moveTo);
+    }
+
+    private void Patrol()
+    {
+        if (!navMeshAgent.pathPending && navMeshAgent.remainingDistance < 0.5f)
+        {
+            SetNextPatrolPoint();
+        }
 
         CheckForTarget();
+    }
 
-
-        // start movng backwards when at a point
-        if (huntTarget == null)
+    private void Chase()
+    {
+        if (huntTarget != null)
         {
-            if (transform.position == moveTo)
+            float distanceToTarget = Vector3.Distance(transform.position, huntTarget.transform.position);
+            float lookAheadTime = Mathf.Clamp(distanceToTarget / navMeshAgent.speed, 0, maxLookaheadTime);
+            Vector3 predictedDestination = huntTarget.transform.position + (velocityReporter.velocity * lookAheadTime);
+
+            navMeshAgent.SetDestination(predictedDestination);
+
+            if (distanceToTarget > visionRange)
             {
-
-                if (moveTo == pointB)
-                {
-                    moveTo = pointA; // Move towards the start position
-                    lookTo = pointA;
-                }
-                else
-                {
-                    moveTo = pointB;   // Move towards the end position
-                    lookTo = pointB;
-
-                }
+                huntTarget = null;
+                currentState = EnemyState.Patrolling;
+                SetNextPatrolPoint();
             }
         }
         else
         {
-            moveTo = huntTarget.transform.position;
-            lookTo = huntTarget.transform.position;
+            huntTarget = null;
+            currentState = EnemyState.Patrolling;
+            SetNextPatrolPoint();
         }
     }
-
 
     void CheckForTarget()
     {
@@ -84,9 +130,10 @@ public class EnemyController : MonoBehaviour
                 {
                     Debug.Log("Player/Hologram in field of vision");
                     huntTarget = rayHit.collider.gameObject;
+                    currentState = EnemyState.Chasing;
+                    break;
                 }
             }
         }
-
     }
 }
