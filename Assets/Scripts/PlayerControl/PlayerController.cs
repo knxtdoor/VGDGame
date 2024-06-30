@@ -11,7 +11,6 @@ public class PlayerController : MonoBehaviour
 
     private InputAction moveAction;
 
-    private CharacterController characterController;
     private Rigidbody rb;
     public float playerMoveSpeed = .3f;
 
@@ -25,11 +24,11 @@ public class PlayerController : MonoBehaviour
     void Start()
     {
         moveAction = actions.FindActionMap("Player").FindAction("Move");
-        characterController = gameObject.AddComponent<CharacterController>();
         rb = gameObject.GetComponent<Rigidbody>();
 
         animator = GetComponent<Animator>();
 
+        rb.constraints = RigidbodyConstraints.FreezeRotationX | RigidbodyConstraints.FreezeRotationZ;
     }
 
     // Update is called once per frame
@@ -38,14 +37,18 @@ public class PlayerController : MonoBehaviour
         //update player speed
         getSpeed();
         
-
         Vector2 inputVec = moveAction.ReadValue<Vector2>();
         Vector3 moveVec = new Vector3(inputVec.x * playerMoveSpeed, rb.velocity.y, inputVec.y * playerMoveSpeed);
-        // characterController.Move(moveVec * playerMoveSpeed);
+                
         rb.velocity = moveVec;
 
         animator.SetFloat("Speed", new Vector3(rb.velocity.x, 0, rb.velocity.z).magnitude);
 
+        if (inputVec != Vector2.zero)
+        {
+            Quaternion facing = Quaternion.LookRotation(new Vector3(inputVec.x, 0, inputVec.y), Vector3.up);
+            transform.rotation = Quaternion.RotateTowards(transform.rotation, facing, 720 * Time.deltaTime);
+        }
     }
 
     void OnEnable()

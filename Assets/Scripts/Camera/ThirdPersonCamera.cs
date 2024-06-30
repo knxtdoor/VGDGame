@@ -7,35 +7,28 @@ public class ThirdPersonCamera : MonoBehaviour
     public float rotationSmoothTime = 1f;
     public float positionMaxSpeed = 50f;        //max speed camera can move
     public float rotationMaxSpeed = 50f;
-    private Transform desiredPose;			// the desired pose for the camera, specified by a transform in the game
-    public GameObject player;
+    public Transform player;
+
+    public Vector3 offset = new Vector3(0, 4, -5);
 
     protected Vector3 currentPositionCorrectionVelocity;
-    //protected Vector3 currentFacingCorrectionVelocity;
-    //protected float currentFacingAngleCorrVel;
-    protected Quaternion quaternionDeriv;
-
-    protected float angle;
 
 
     void Start()
     {
-        this.desiredPose = player.transform.Find("CameraPos");
+        if (player != null)
+        {
+            offset = transform.position - player.position;
+        }
     }
 
     void LateUpdate()
     {
 
-        if (desiredPose != null)
+        if (player != null)
         {
-            transform.position = Vector3.SmoothDamp(transform.position, desiredPose.position, ref currentPositionCorrectionVelocity, positionSmoothTime, positionMaxSpeed, Time.deltaTime);
-
-            var targForward = desiredPose.forward;
-            //var targForward = (target.position - this.transform.position).normalized;
-
-            transform.rotation = QuaternionUtil.SmoothDamp(transform.rotation,
-                Quaternion.LookRotation(targForward, Vector3.up), ref quaternionDeriv, rotationSmoothTime);
-
-        }
+            Vector3 targetPosition = player.position + offset;
+            transform.position = Vector3.SmoothDamp(transform.position, targetPosition, ref currentPositionCorrectionVelocity, positionSmoothTime, positionMaxSpeed, Time.deltaTime);
+            transform.rotation = Quaternion.Euler(30, 0, 0);        }
     }
 }
