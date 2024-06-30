@@ -56,6 +56,7 @@ public class VisionCone : MonoBehaviour
         mesh.triangles = indices;
         mesh.RecalculateBounds();
         mesh.RecalculateNormals();
+        this.gameObject.isStatic = false;
         MeshFilter filter = GetComponent<MeshFilter>();
         MeshRenderer renderer = GetComponent<MeshRenderer>();
         filter.sharedMesh = mesh;
