@@ -15,11 +15,10 @@ public class EnemyController : MonoBehaviour
 
     public float speed = 1f;
     public float rotateSpeed = 220f;
-    public Transform enemy;
     public Transform player;
 
-    private Vector3 pointA = new Vector3(0, 1, 15); //location to move from
-    private Vector3 pointB = new Vector3(10, 1, 15); //location to move towrds
+    public Vector3 pointA = new Vector3(0, 1, 15); //location to move from
+    public Vector3 pointB = new Vector3(10, 1, 15); //location to move towrds
     private Vector3 moveTo;
     private Vector3 lookTo;
 
@@ -33,6 +32,7 @@ public class EnemyController : MonoBehaviour
     private NavMeshAgent navMeshAgent;
     private EnemyState currentState;
     private VelocityReporter velocityReporter;
+    private Animator anim;
     public float maxLookaheadTime = 2.0f;
 
     // Start is called before the first frame update
@@ -45,6 +45,9 @@ public class EnemyController : MonoBehaviour
         lookTo = pointB;
         SetNextPatrolPoint();
         velocityReporter = player.GetComponent<VelocityReporter>();
+        anim = GetComponent<Animator>();
+        anim.SetBool("active", true);
+
     }
 
     // Update is called once per frame
