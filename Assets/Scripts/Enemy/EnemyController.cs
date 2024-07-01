@@ -35,6 +35,7 @@ public class EnemyController : MonoBehaviour
     private Animator anim;
     public float maxLookaheadTime = 2.0f;
 
+
     // Start is called before the first frame update
     void Start()
     {
@@ -64,28 +65,32 @@ public class EnemyController : MonoBehaviour
         }
     }
 
-    private void SetNextPatrolPoint()
+    private void SetNextPatrolPoint(Vector3 location = default(Vector3))
     {
-        if (moveTo == pointB)
-        {
-            moveTo = pointA; // Move towards the start position
-            lookTo = pointA;
-        }
-        else
-        {
-            moveTo = pointB; // Move towards the end position
-            lookTo = pointB;
+        if (location == default(Vector3)) {
+            if (moveTo == pointB)
+            {
+                moveTo = pointA; // Move towards the start position
+                lookTo = pointA;
+            }   
+            else
+            {
+                moveTo = pointB; // Move towards the end position
+                lookTo = pointB;
 
+            }
         }
-
+        else {
+            moveTo = location;
+        }
         navMeshAgent.SetDestination(moveTo);
     }
 
-    private void Patrol()
+    public void Patrol(Vector3 location = default(Vector3)) //location to be used when player is spotted by camera or laser
     {
-        if (!navMeshAgent.pathPending && navMeshAgent.remainingDistance < 0.5f)
+        if ((!navMeshAgent.pathPending && navMeshAgent.remainingDistance < 0.5f) || location != default(Vector3))
         {
-            SetNextPatrolPoint();
+            SetNextPatrolPoint(location);
         }
 
         CheckForTarget();
