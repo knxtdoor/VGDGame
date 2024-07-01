@@ -5,6 +5,7 @@ using System.Security.Cryptography.X509Certificates;
 using UnityEngine;
 using UnityEngine.InputSystem;
 
+[RequireComponent(typeof(Animator), typeof(Rigidbody), typeof(CapsuleCollider))]
 public class PlayerController : MonoBehaviour
 {
     public InputActionAsset actions;
@@ -20,34 +21,38 @@ public class PlayerController : MonoBehaviour
 
     private Animator animator;
 
+    public float wallDetectionDistance = 0.5f;
+
+
     // Start is called before the first frame update
     void Start()
     {
         moveAction = actions.FindActionMap("Player").FindAction("Move");
         rb = gameObject.GetComponent<Rigidbody>();
-
         animator = GetComponent<Animator>();
-
-        rb.constraints = RigidbodyConstraints.FreezeRotationX | RigidbodyConstraints.FreezeRotationZ;
+        rb.interpolation = RigidbodyInterpolation.Interpolate;
     }
 
     // Update is called once per frame
     void Update()
-    {
-        //update player speed
-        getSpeed();
-        
+    {        
         Vector2 inputVec = moveAction.ReadValue<Vector2>();
-        Vector3 moveVec = new Vector3(inputVec.x * playerMoveSpeed, rb.velocity.y, inputVec.y * playerMoveSpeed);
-                
-        rb.velocity = moveVec;
+        Vector3 moveVec = new Vector3(inputVec.x, 0, inputVec.y);
+        getSpeed();
+
+        moveVec *= playerMoveSpeed;
+
+        if (!IsHittingWall(moveVec))
+        {
+            rb.velocity = new Vector3(moveVec.x, rb.velocity.y, moveVec.z);
+        }
 
         animator.SetFloat("Speed", new Vector3(rb.velocity.x, 0, rb.velocity.z).magnitude);
 
         if (inputVec != Vector2.zero)
         {
-            Quaternion facing = Quaternion.LookRotation(new Vector3(inputVec.x, 0, inputVec.y), Vector3.up);
-            transform.rotation = Quaternion.RotateTowards(transform.rotation, facing, 720 * Time.deltaTime);
+            Quaternion facing = Quaternion.LookRotation(new Vector3(moveVec.x, 0, moveVec.z));
+            transform.rotation = Quaternion.Slerp(transform.rotation, facing, Time.deltaTime * 10f);
         }
     }
 
@@ -64,6 +69,17 @@ public class PlayerController : MonoBehaviour
         }
     }
 
+    void OnAnimatorMove()
+    {
+        if (animator)
+        {
+            Vector3 newPosition = animator.rootPosition;
+            newPosition.y = rb.position.y;
+            rb.MovePosition(newPosition);
+            rb.MoveRotation(animator.rootRotation);
+        }
+    }
+
     void getSpeed() {
         if (Input.GetKey(KeyCode.LeftShift)) {
             playerMoveSpeed = sprintSpeed;
@@ -74,5 +90,20 @@ public class PlayerController : MonoBehaviour
         else {
             playerMoveSpeed = baseSpeed;
         }
+    }
+
+    bool IsHittingWall(Vector3 moveDirection)
+    {
+        RaycastHit hit;
+        Vector3 origin = transform.position + Vector3.up * 0.5f;
+
+        if (Physics.Raycast(origin, moveDirection, out hit, wallDetectionDistance))
+        {
+            if (hit.collider.tag != "Ground")
+            {
+                return true;
+            }
+        }
+        return false;
     }
 }
