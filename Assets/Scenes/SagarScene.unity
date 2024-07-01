@@ -448,7 +448,7 @@ GameObject:
   - component: {fileID: 490558542}
   m_Layer: 0
   m_Name: Ground
-  m_TagString: Untagged
+  m_TagString: Ground
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
@@ -624,7 +624,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   speed: 3
   enemy: {fileID: 667639691}
-  player: {fileID: 1483970351}
+  player: {fileID: 1562836235}
 --- !u!54 &667639687
 Rigidbody:
   m_ObjectHideFlags: 0
@@ -1213,7 +1213,7 @@ MonoBehaviour:
   rotationSmoothTime: 0.4
   positionMaxSpeed: 50
   rotationMaxSpeed: 50
-  player: {fileID: 1483970351}
+  player: {fileID: 1562836235}
   offset: {x: 0, y: 1, z: -10}
 --- !u!1 &1082164976
 GameObject:
@@ -1356,7 +1356,7 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 919132149155446097, guid: ab1706eeb0ec443538140f30b1e94329, type: 3}
       propertyPath: m_Name
-      value: Exo Gray
+      value: Player
       objectReference: {fileID: 0}
     - target: {fileID: 919132149155446097, guid: ab1706eeb0ec443538140f30b1e94329, type: 3}
       propertyPath: m_TagString
@@ -1459,6 +1459,7 @@ MonoBehaviour:
   baseSpeed: 3
   sprintSpeed: 4.5
   walkSpeed: 1.5
+  wallDetectionDistance: 0.5
 --- !u!136 &1483970348
 CapsuleCollider:
   m_ObjectHideFlags: 0
@@ -1550,6 +1551,7 @@ MonoBehaviour:
   baseSpeed: 3
   sprintSpeed: 4.5
   walkSpeed: 1.5
+  wallDetectionDistance: 0.5
 --- !u!136 &1562836232
 CapsuleCollider:
   m_ObjectHideFlags: 0
@@ -1561,9 +1563,9 @@ CapsuleCollider:
   m_IsTrigger: 0
   m_Enabled: 1
   m_Radius: 0.25
-  m_Height: 1.75
+  m_Height: 1.9937882
   m_Direction: 1
-  m_Center: {x: 0, y: 1, z: 0}
+  m_Center: {x: 0, y: 0.8781059, z: 0}
 --- !u!54 &1562836233
 Rigidbody:
   m_ObjectHideFlags: 0
@@ -1580,6 +1582,11 @@ Rigidbody:
   m_Interpolate: 0
   m_Constraints: 112
   m_CollisionDetection: 0
+--- !u!4 &1562836235 stripped
+Transform:
+  m_CorrespondingSourceObject: {fileID: -8679921383154817045, guid: ab1706eeb0ec443538140f30b1e94329, type: 3}
+  m_PrefabInstance: {fileID: 1346672163}
+  m_PrefabAsset: {fileID: 0}
 --- !u!1 &1626187679 stripped
 GameObject:
   m_CorrespondingSourceObject: {fileID: 100000, guid: f9f0089f1d06c63419259147cd77fd2c, type: 3}
@@ -1623,11 +1630,15 @@ PrefabInstance:
     m_Modifications:
     - target: {fileID: 193908, guid: 7aa6f6434be94e44583bd055d3a42eee, type: 3}
       propertyPath: m_Name
-      value: Player
+      value: Old Player
+      objectReference: {fileID: 0}
+    - target: {fileID: 193908, guid: 7aa6f6434be94e44583bd055d3a42eee, type: 3}
+      propertyPath: m_IsActive
+      value: 0
       objectReference: {fileID: 0}
     - target: {fileID: 193908, guid: 7aa6f6434be94e44583bd055d3a42eee, type: 3}
       propertyPath: m_TagString
-      value: Player
+      value: Untagged
       objectReference: {fileID: 0}
     - target: {fileID: 427246, guid: 7aa6f6434be94e44583bd055d3a42eee, type: 3}
       propertyPath: m_RootOrder
