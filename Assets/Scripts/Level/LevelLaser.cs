@@ -16,7 +16,7 @@ public class LevelLaser : MonoBehaviour
     public float timer = 0f; //laser switches between on/off every x secs ; 0 is static
     public bool active = true;
     private bool coroutineStarted = false; //coroutine for timer
-    //public GameObject enemy;
+    public GameObject enemy;
     private AudioSource alarmSound;
 
     void Start() {
@@ -51,15 +51,12 @@ public class LevelLaser : MonoBehaviour
                 
                 //Check if object is player
                 if (hit.collider.name == "Player") {
-                    //if (enemy != null) {
-                        // NavMeshAgent agent = enemy.GetComponent<NavMeshAgent>();
-                        // if (agent != null) {
-                        //     agent.SetDestination(transform.position + end);
-                        // }
-                    Debug.Log(transform.rotation);
+                    if (enemy != null) {
+                            EnemyController setPointFunc = enemy.GetComponent<EnemyController>();
+                            setPointFunc.Patrol(transform.position + directionVec *hit.distance);
+                        }
                     if (!alarmSound.isPlaying) {
                         alarmSound.Play();
-                        
                     }
                     //}
                 }
