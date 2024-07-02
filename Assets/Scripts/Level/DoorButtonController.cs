@@ -11,6 +11,7 @@ public class DoorButtonController : MonoBehaviour
     private DoorController doorController;
     public InputActionAsset actions;
     private InputAction interact;
+    private bool indicatorActive = true;
     bool playerInRange;
     void Start()
     {
@@ -25,6 +26,11 @@ public class DoorButtonController : MonoBehaviour
         if (interact.ReadValue<float>() > 0 && playerInRange)
         {
             doorController.OpenDoor();
+            if (indicatorActive)
+            {
+                this.GetComponentInChildren<InteractableIndicator>().gameObject.SetActive(false);
+                indicatorActive = false;
+            }
         }
 
     }
