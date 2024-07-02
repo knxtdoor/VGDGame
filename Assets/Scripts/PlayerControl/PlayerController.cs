@@ -75,9 +75,8 @@ public class PlayerController : MonoBehaviour
 
         //Get movement (WASD) input, and create movement vector
         Vector2 inputVec = moveAction.ReadValue<Vector2>();
-        Debug.Log(inputVec);
+
         Vector3 moveVec = (transform.forward * (inputVec.y * playerMoveSpeed)) + (transform.right * (inputVec.x * playerMoveSpeed));
-        Debug.Log(moveVec);
         moveVec.y = rb.velocity.y;
         rb.velocity = moveVec;
 
@@ -87,16 +86,16 @@ public class PlayerController : MonoBehaviour
         {
             rb.velocity = new Vector3(moveVec.x, rb.velocity.y, moveVec.z);
         }
+        Debug.Log(inputVec.y * playerMoveSpeed);
+        animator.SetFloat("Speed", inputVec.y * playerMoveSpeed);
 
-        animator.SetFloat("Speed", new Vector3(rb.velocity.x, 0, rb.velocity.z).magnitude);
+        // if (inputVec != Vector2.zero)
+        // {
+        //     Quaternion facing = Quaternion.LookRotation(new Vector3(moveVec.z, 0, Mathf.Abs(moveVec.x)));
+        //     transform.rotation = Quaternion.Slerp(transform.rotation, facing, Time.deltaTime * 2f);
+        //     //Handle the hologram ability
 
-        if (inputVec != Vector2.zero)
-        {
-            Quaternion facing = Quaternion.LookRotation(new Vector3(moveVec.z, 0, Mathf.Abs(moveVec.x)));
-            transform.rotation = Quaternion.Slerp(transform.rotation, facing, Time.deltaTime * 2f);
-            //Handle the hologram ability
-
-        }
+        // }
         if (doHologram.ReadValue<float>() > 0)
         {
             HandleHologram();
@@ -104,32 +103,6 @@ public class PlayerController : MonoBehaviour
 
     }
 
-    /* 
-    
-        void FixedUpdate()
-    {
-        //update player speed
-        getSpeed();
-
-
-        ThirdPersonCamera tpc = cameraObj.GetComponent<ThirdPersonCamera>();
-        float mouseX = look.ReadValue<Vector2>().x;
-        transform.Rotate(new Vector3(0, mouseX * tpc.sensitivity, 0));
-
-        //Get movement (WASD) input, and create movement vector
-        Vector2 inputVec = moveAction.ReadValue<Vector2>();
-        Vector3 moveVec = (transform.forward * (inputVec.y * playerMoveSpeed)) + (transform.right * (inputVec.x * playerMoveSpeed));
-        moveVec.y = rb.velocity.y;
-        rb.velocity = moveVec;
-
-
-        //Handle the hologram ability
-        if (doHologram.ReadValue<float>() > 0)
-        {
-            HandleHologram();
-        }
-    }
-*/
 
     void OnEnable()
     {
@@ -148,13 +121,13 @@ public class PlayerController : MonoBehaviour
 
     void OnAnimatorMove()
     {
-        if (animator)
-        {
-            Vector3 newPosition = animator.rootPosition;
-            newPosition.y = rb.position.y;
-            rb.MovePosition(newPosition);
-            rb.MoveRotation(animator.rootRotation);
-        }
+        // if (animator)
+        // {
+        //     Vector3 newPosition = animator.rootPosition;
+        //     newPosition.y = rb.position.y;
+        //     rb.MovePosition(newPosition);
+        //     rb.MoveRotation(animator.rootRotation);
+        // }
     }
     void getSpeed()
     {
