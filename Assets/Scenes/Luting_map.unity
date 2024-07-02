@@ -2280,7 +2280,7 @@ PrefabInstance:
     - target: {fileID: 1840266978451223355, guid: d02add4d915bb6e4bacf79bf6da0e392, type: 3}
       propertyPath: enemy
       value: 
-      objectReference: {fileID: 0}
+      objectReference: {fileID: 1510658627}
     - target: {fileID: 1840266978451223355, guid: d02add4d915bb6e4bacf79bf6da0e392, type: 3}
       propertyPath: direction
       value: 0
@@ -2633,7 +2633,7 @@ PrefabInstance:
     - target: {fileID: 1840266978451223355, guid: d02add4d915bb6e4bacf79bf6da0e392, type: 3}
       propertyPath: enemy
       value: 
-      objectReference: {fileID: 0}
+      objectReference: {fileID: 1510658627}
     - target: {fileID: 1840266978451223355, guid: d02add4d915bb6e4bacf79bf6da0e392, type: 3}
       propertyPath: timer
       value: 0
@@ -11806,7 +11806,7 @@ PrefabInstance:
     - target: {fileID: 1840266978451223355, guid: d02add4d915bb6e4bacf79bf6da0e392, type: 3}
       propertyPath: enemy
       value: 
-      objectReference: {fileID: 0}
+      objectReference: {fileID: 1510658627}
     - target: {fileID: 1840266978451223355, guid: d02add4d915bb6e4bacf79bf6da0e392, type: 3}
       propertyPath: direction
       value: 1
@@ -12189,7 +12189,7 @@ PrefabInstance:
     - target: {fileID: 1840266978451223355, guid: d02add4d915bb6e4bacf79bf6da0e392, type: 3}
       propertyPath: enemy
       value: 
-      objectReference: {fileID: 0}
+      objectReference: {fileID: 1510658627}
     - target: {fileID: 1840266978451223355, guid: d02add4d915bb6e4bacf79bf6da0e392, type: 3}
       propertyPath: direction
       value: 0

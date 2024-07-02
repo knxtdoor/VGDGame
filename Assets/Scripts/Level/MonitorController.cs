@@ -9,6 +9,7 @@ public class MonitorController : MonoBehaviour
     public CanvasGroup popup;
     private InputAction interact;
     private bool playerInRange;
+    private bool indicatorActive = true;
     void Start()
     {
         interact = actions.FindActionMap("Player").FindAction("Interact");
@@ -19,6 +20,11 @@ public class MonitorController : MonoBehaviour
     {
         if (playerInRange && interact.ReadValue<float>() > 0)
         {
+            if (indicatorActive == true)
+            {
+                this.GetComponentInChildren<InteractableIndicator>().gameObject.SetActive(false);
+                indicatorActive = false;
+            }
             ShowPopup();
         }
         if (!playerInRange && popup.interactable)
