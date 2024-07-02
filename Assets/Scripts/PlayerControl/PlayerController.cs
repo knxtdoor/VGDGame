@@ -23,7 +23,7 @@ public class PlayerController : MonoBehaviour
 
     //Movement and speed constants
     private Rigidbody rb;
-    public float playerMoveSpeed = .3f;
+    private float playerMoveSpeed = .3f;
 
     public float baseSpeed = 3f;
     public float sprintSpeed = 4.5f;
@@ -75,7 +75,9 @@ public class PlayerController : MonoBehaviour
 
         //Get movement (WASD) input, and create movement vector
         Vector2 inputVec = moveAction.ReadValue<Vector2>();
+        Debug.Log(inputVec);
         Vector3 moveVec = (transform.forward * (inputVec.y * playerMoveSpeed)) + (transform.right * (inputVec.x * playerMoveSpeed));
+        Debug.Log(moveVec);
         moveVec.y = rb.velocity.y;
         rb.velocity = moveVec;
 
@@ -90,84 +92,111 @@ public class PlayerController : MonoBehaviour
 
         if (inputVec != Vector2.zero)
         {
-            Quaternion facing = Quaternion.LookRotation(new Vector3(moveVec.x, 0, moveVec.z));
-            transform.rotation = Quaternion.Slerp(transform.rotation, facing, Time.deltaTime * 10f);
+            Quaternion facing = Quaternion.LookRotation(new Vector3(moveVec.z, 0, Mathf.Abs(moveVec.x)));
+            transform.rotation = Quaternion.Slerp(transform.rotation, facing, Time.deltaTime * 2f);
             //Handle the hologram ability
-            if (doHologram.ReadValue<float>() > 0)
-            {
-                HandleHologram();
-            }
+
+        }
+        if (doHologram.ReadValue<float>() > 0)
+        {
+            HandleHologram();
         }
 
+    }
+
+    /* 
+    
+        void FixedUpdate()
+    {
+        //update player speed
+        getSpeed();
 
 
-        void OnEnable()
+        ThirdPersonCamera tpc = cameraObj.GetComponent<ThirdPersonCamera>();
+        float mouseX = look.ReadValue<Vector2>().x;
+        transform.Rotate(new Vector3(0, mouseX * tpc.sensitivity, 0));
+
+        //Get movement (WASD) input, and create movement vector
+        Vector2 inputVec = moveAction.ReadValue<Vector2>();
+        Vector3 moveVec = (transform.forward * (inputVec.y * playerMoveSpeed)) + (transform.right * (inputVec.x * playerMoveSpeed));
+        moveVec.y = rb.velocity.y;
+        rb.velocity = moveVec;
+
+
+        //Handle the hologram ability
+        if (doHologram.ReadValue<float>() > 0)
         {
-            actions.FindActionMap("Player").Enable();
-        }
-
-        void OnCollisionEnter(Collision collision)
-        {
-            Debug.Log(collision.gameObject.name);
-
-            if (collision.gameObject.tag == "Enemy")
-            {
-                cameraObj.transform.parent = null;
-                gameObject.SetActive(false);
-            }
-        }
-
-        void OnAnimatorMove()
-        {
-            if (animator)
-            {
-                Vector3 newPosition = animator.rootPosition;
-                newPosition.y = rb.position.y;
-                rb.MovePosition(newPosition);
-                rb.MoveRotation(animator.rootRotation);
-            }
-        }
-        void getSpeed()
-        {
-
-            if (doSprint.ReadValue<float>() > 0)
-            {
-                playerMoveSpeed = sprintSpeed;
-            }
-            else if (doWalk.ReadValue<float>() > 0)
-            {
-                playerMoveSpeed = walkSpeed;
-            }
-            else
-            {
-                playerMoveSpeed = baseSpeed;
-            }
-        }
-
-        bool IsHittingWall(Vector3 moveDirection)
-        {
-            RaycastHit hit;
-            Vector3 origin = transform.position + Vector3.up * 0.5f;
-
-            if (Physics.Raycast(origin, moveDirection, out hit, wallDetectionDistance))
-            {
-                if (hit.collider.tag != "Ground")
-                {
-                    return true;
-                }
-            }
-            return false;
-        }
-        void HandleHologram()
-        {
-            if (activeHolo == null)
-            {
-                GameObject newHologram = Instantiate(holoPrefab);
-                newHologram.transform.SetPositionAndRotation(this.transform.position + (this.transform.forward * 2), this.transform.rotation);
-                activeHolo = newHologram.GetComponent<HologramController>();
-                activeHolo.player = this;
-                Vector3 holoDest = this.transform.position + (this.transform.forward * 10);
-                activeHolo.DispatchHologram(holoDest);
-            }
+            HandleHologram();
         }
     }
+*/
+
+    void OnEnable()
+    {
+        actions.FindActionMap("Player").Enable();
+    }
+
+    void OnCollisionEnter(Collision collision)
+    {
+
+        if (collision.gameObject.tag == "Enemy")
+        {
+            cameraObj.transform.parent = null;
+            gameObject.SetActive(false);
+        }
+    }
+
+    void OnAnimatorMove()
+    {
+        if (animator)
+        {
+            Vector3 newPosition = animator.rootPosition;
+            newPosition.y = rb.position.y;
+            rb.MovePosition(newPosition);
+            rb.MoveRotation(animator.rootRotation);
+        }
+    }
+    void getSpeed()
+    {
+
+        if (doSprint.ReadValue<float>() > 0)
+        {
+            playerMoveSpeed = sprintSpeed;
+        }
+        else if (doWalk.ReadValue<float>() > 0)
+        {
+            playerMoveSpeed = walkSpeed;
+        }
+        else
+        {
+            playerMoveSpeed = baseSpeed;
+        }
+    }
+
+    bool IsHittingWall(Vector3 moveDirection)
+    {
+        RaycastHit hit;
+        Vector3 origin = transform.position + Vector3.up * 0.5f;
+
+        if (Physics.Raycast(origin, moveDirection, out hit, wallDetectionDistance))
+        {
+            if (hit.collider.tag != "Ground")
+            {
+                return true;
+            }
+        }
+        return false;
+    }
+    void HandleHologram()
+    {
+        if (activeHolo == null)
+        {
+            GameObject newHologram = Instantiate(holoPrefab);
+            newHologram.transform.SetPositionAndRotation(this.transform.position + (this.transform.forward * 2), this.transform.rotation);
+            activeHolo = newHologram.GetComponent<HologramController>();
+            activeHolo.player = this;
+            Vector3 holoDest = this.transform.position + (this.transform.forward * 10);
+            activeHolo.DispatchHologram(holoDest);
+        }
+    }
+}
