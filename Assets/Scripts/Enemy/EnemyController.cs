@@ -1,70 +1,147 @@
-using System;
-using System.Collections;
-using System.Collections.Generic;
-using UnityEngine;
 
+using System;
+using UnityEngine;
+using UnityEngine.AI;
+
+public enum EnemyState
+{
+    Patrolling,
+    Chasing
+}
+
+[RequireComponent(typeof(NavMeshAgent))]
 public class EnemyController : MonoBehaviour
 {
 
     public float speed = 1f;
-    public Transform enemy;
+    public float rotateSpeed = 220f;
     public Transform player;
 
-    private Vector3 pointA = new Vector3(0, 1, 15); //location to move from
-    private Vector3 pointB = new Vector3(10, 1, 15); //location to move towrds
+    public Vector3 pointA = new Vector3(0, 1, 15); //location to move from
+    public Vector3 pointB = new Vector3(10, 1, 15); //location to move towrds
     private Vector3 moveTo;
+    private Vector3 lookTo;
 
-    private bool hunting = false;
+    private GameObject huntTarget = null;
+
+    private Mesh mesh;
+
+    public float visionRange = 5f;
+    public float FOV = 120f;
+
+    private NavMeshAgent navMeshAgent;
+    private EnemyState currentState;
+    private VelocityReporter velocityReporter;
+    private Animator anim;
+    public float maxLookaheadTime = 2.0f;
+
 
     // Start is called before the first frame update
     void Start()
     {
+        navMeshAgent = GetComponent<NavMeshAgent>();
+        navMeshAgent.speed = speed;
+        currentState = EnemyState.Patrolling;
         moveTo = pointB;
+        lookTo = pointB;
+        SetNextPatrolPoint();
+        velocityReporter = player.GetComponent<VelocityReporter>();
+        anim = GetComponent<Animator>();
+        anim.SetBool("active", true);
+
     }
 
     // Update is called once per frame
     void FixedUpdate()
     {
-        //Move
-        transform.position = Vector3.MoveTowards(transform.position, moveTo, speed * Time.deltaTime);
-
-        Vector3 directionOfPlayer = player.position - transform.position;
-        float angleBetween = Vector3.Angle(transform.forward, directionOfPlayer);
-        float playerDistance = Vector3.Distance(transform.position, player.position);
-        if (((angleBetween > 0 && angleBetween < 60) || (angleBetween > 300 && angleBetween < 360)) && playerDistance < 5)
+        switch (currentState)
         {
-            //Player is in cone of vision, now check for obstruction
-            RaycastHit rayHit;
-            if (Physics.Raycast(transform.position, directionOfPlayer, out rayHit, 5))
+            case EnemyState.Patrolling:
+                Patrol();
+                break;
+            case EnemyState.Chasing:
+                Chase();
+                break;
+        }
+    }
+
+    private void SetNextPatrolPoint(Vector3 location = default(Vector3))
+    {
+        if (location == default(Vector3)) {
+            if (moveTo == pointB)
             {
-                if (rayHit.collider.gameObject.tag == "Player")
-                {
-                    Debug.Log("Player in field of vision");
-                    hunting = true;
-                }
+                moveTo = pointA; // Move towards the start position
+                lookTo = pointA;
+            }   
+            else
+            {
+                moveTo = pointB; // Move towards the end position
+                lookTo = pointB;
+
             }
         }
+        else {
+            moveTo = location;
+        }
+        navMeshAgent.SetDestination(moveTo);
+    }
 
-
-        // start movng backwards when at a point
-        if (!hunting)
+    public void Patrol(Vector3 location = default(Vector3)) //location to be used when player is spotted by camera or laser
+    {
+        if ((!navMeshAgent.pathPending && navMeshAgent.remainingDistance < 0.5f) || location != default(Vector3))
         {
-            if (transform.position == moveTo)
-            {
+            SetNextPatrolPoint(location);
+        }
 
-                if (moveTo == pointB)
-                {
-                    moveTo = pointA; // Move towards the start position
-                }
-                else
-                {
-                    moveTo = pointB;   // Move towards the end position
-                }
+        CheckForTarget();
+    }
+
+    private void Chase()
+    {
+        if (huntTarget != null)
+        {
+            float distanceToTarget = Vector3.Distance(transform.position, huntTarget.transform.position);
+            float lookAheadTime = Mathf.Clamp(distanceToTarget / navMeshAgent.speed, 0, maxLookaheadTime);
+            Vector3 predictedDestination = huntTarget.transform.position + (velocityReporter.velocity * lookAheadTime);
+
+            navMeshAgent.SetDestination(predictedDestination);
+
+            if (distanceToTarget > visionRange)
+            {
+                huntTarget = null;
+                currentState = EnemyState.Patrolling;
+                SetNextPatrolPoint();
             }
         }
         else
         {
-            moveTo = player.position;
+            huntTarget = null;
+            currentState = EnemyState.Patrolling;
+            SetNextPatrolPoint();
+        }
+    }
+
+    void CheckForTarget()
+    {
+        float degreeIncrement = Mathf.PI / 8;
+        float facingDirection = Mathf.Atan2(this.transform.forward.z, this.transform.forward.x);
+        float FOVrad = Mathf.Deg2Rad * FOV;
+
+        for (float i = facingDirection - (FOVrad / 2); i < facingDirection + (FOVrad / 2); i += degreeIncrement)
+        {
+            Vector3 currDirection = new Vector3(Mathf.Cos(i), 0, Mathf.Sin(i));
+            RaycastHit rayHit;
+            if (Physics.Raycast(transform.position, currDirection, out rayHit, visionRange))
+            {
+                string collisionTag = rayHit.collider.gameObject.tag;
+                if (collisionTag == "Player" || collisionTag == "Hologram")
+                {
+                    Debug.Log("Player/Hologram in field of vision");
+                    huntTarget = rayHit.collider.gameObject;
+                    currentState = EnemyState.Chasing;
+                    break;
+                }
+            }
         }
     }
 }
