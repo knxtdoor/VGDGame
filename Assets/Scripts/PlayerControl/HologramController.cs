@@ -14,6 +14,7 @@ public class HologramController : MonoBehaviour
     private float hologramSpeed = 2.0f;
 
     private Animator animator;
+    private float timeout = 5;
 
     void Start()
     {
@@ -27,7 +28,11 @@ public class HologramController : MonoBehaviour
         if (hologramActive)
         {
             this.transform.position = Vector3.MoveTowards(this.transform.position, destination, hologramSpeed * Time.deltaTime);
-
+            this.timeout = timeout - Time.deltaTime;
+            if (timeout <= 0)
+            {
+                Destroy(this.gameObject);
+            }
 
             if (Vector3.Distance(this.transform.position, destination) < .05)
             {
