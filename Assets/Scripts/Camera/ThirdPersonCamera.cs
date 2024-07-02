@@ -12,27 +12,32 @@ public class ThirdPersonCamera : MonoBehaviour
     public float sensitivity = 1;
 
     private float rotateVertical = 0;
-
+    private float rotateHorizontal = 0;
     private float cameraDistance = 5;
+
+    private Vector3 oldPlayerPos;
 
 
     void Start()
     {
         mouse = actions.FindActionMap("Player").FindAction("Look");
+        transform.LookAt(player.transform);
         Cursor.lockState = CursorLockMode.Locked;
+        oldPlayerPos = player.transform.position;
     }
 
     void FixedUpdate()
     {
 
-
+        Vector3 playerOffset = player.transform.position - oldPlayerPos;
+        this.transform.position += playerOffset;
         //Read mouse input for camera rotation
         Vector2 mouseRead = mouse.ReadValue<Vector2>();
         rotateVertical = mouseRead.y;
-
+        rotateHorizontal = mouseRead.x;
         //Rotate camera based on mouse input, ignoring collisions
         transform.RotateAround(player.transform.position, transform.right, rotateVertical * sensitivity);
-
+        transform.RotateAround(player.transform.position, transform.up, rotateHorizontal * sensitivity);
         // Limit x rotation to prevent rotating around characters head or feet
         float xAngle = transform.eulerAngles.x;
         if (xAngle > 180)
@@ -67,6 +72,8 @@ public class ThirdPersonCamera : MonoBehaviour
             this.transform.position = player.transform.position + (rayDir * cameraDistance);
 
         }
+
+        oldPlayerPos = player.transform.position;
 
     }
 

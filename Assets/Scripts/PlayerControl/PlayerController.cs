@@ -69,20 +69,17 @@ public class PlayerController : MonoBehaviour
     // Update is called once per frame
     void FixedUpdate()
     {
-        //update player speed
-        getSpeed();
 
 
         ThirdPersonCamera tpc = cameraObj.GetComponent<ThirdPersonCamera>();
         float mouseX = look.ReadValue<Vector2>().x;
         transform.Rotate(new Vector3(0, mouseX * tpc.sensitivity, 0));
 
-        //Get movement (WASD) input, and create movement vector
-        Vector2 inputVec = moveAction.ReadValue<Vector2>();
 
-        Vector3 moveVec = (transform.forward * (inputVec.y * playerMoveSpeed)) + (transform.right * (inputVec.x * playerMoveSpeed));
-        moveVec.y = rb.velocity.y;
-        rb.velocity = moveVec;
+
+        Vector2 inputVec = moveAction.ReadValue<Vector2>();
+        Vector3 moveVec = new Vector3(inputVec.x, 0, inputVec.y);
+        getSpeed();
 
         moveVec *= playerMoveSpeed;
 
@@ -90,15 +87,14 @@ public class PlayerController : MonoBehaviour
         {
             rb.velocity = new Vector3(moveVec.x, rb.velocity.y, moveVec.z);
         }
-        animator.SetFloat("Speed", inputVec.y * playerMoveSpeed);
 
-        // if (inputVec != Vector2.zero)
-        // {
-        //     Quaternion facing = Quaternion.LookRotation(new Vector3(moveVec.z, 0, Mathf.Abs(moveVec.x)));
-        //     transform.rotation = Quaternion.Slerp(transform.rotation, facing, Time.deltaTime * 2f);
-        //     //Handle the hologram ability
+        animator.SetFloat("Speed", new Vector3(rb.velocity.x, 0, rb.velocity.z).magnitude);
 
-        // }
+        if (inputVec != Vector2.zero)
+        {
+            Quaternion facing = Quaternion.LookRotation(new Vector3(moveVec.x, 0, moveVec.z));
+            transform.rotation = Quaternion.Slerp(transform.rotation, facing, Time.deltaTime * 10f);
+        }
         if (doHologram.ReadValue<float>() > 0)
         {
             HandleHologram();
@@ -106,6 +102,29 @@ public class PlayerController : MonoBehaviour
 
     }
 
+    /*
+        void Update()
+        {        
+            Vector2 inputVec = moveAction.ReadValue<Vector2>();
+            Vector3 moveVec = new Vector3(inputVec.x, 0, inputVec.y);
+            getSpeed();
+
+            moveVec *= playerMoveSpeed;
+
+            if (!IsHittingWall(moveVec))
+            {
+                rb.velocity = new Vector3(moveVec.x, rb.velocity.y, moveVec.z);
+            }
+
+            animator.SetFloat("Speed", new Vector3(rb.velocity.x, 0, rb.velocity.z).magnitude);
+
+            if (inputVec != Vector2.zero)
+            {
+                Quaternion facing = Quaternion.LookRotation(new Vector3(moveVec.x, 0, moveVec.z));
+                transform.rotation = Quaternion.Slerp(transform.rotation, facing, Time.deltaTime * 10f);
+            }
+        }
+    */
 
     void OnEnable()
     {
@@ -125,13 +144,13 @@ public class PlayerController : MonoBehaviour
 
     void OnAnimatorMove()
     {
-        // if (animator)
-        // {
-        //     Vector3 newPosition = animator.rootPosition;
-        //     newPosition.y = rb.position.y;
-        //     rb.MovePosition(newPosition);
-        //     rb.MoveRotation(animator.rootRotation);
-        // }
+        if (animator)
+        {
+            Vector3 newPosition = animator.rootPosition;
+            newPosition.y = rb.position.y;
+            rb.MovePosition(newPosition);
+            rb.MoveRotation(animator.rootRotation);
+        }
     }
     void getSpeed()
     {
