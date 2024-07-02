@@ -7,8 +7,9 @@ public class LevelLaser : MonoBehaviour
 {
 
     private LineRenderer lr;
-    public enum LaserDirection { //used for collision raycast check, can remove if rotation is used to find direction in world coords
-    posZ, negZ, posX, negX, posY, negY
+    public enum LaserDirection
+    { //used for collision raycast check, can remove if rotation is used to find direction in world coords
+        posZ, negZ, posX, negX, posY, negY
     }
     public LaserDirection direction;
     public float maxLength = 50f;
@@ -19,23 +20,28 @@ public class LevelLaser : MonoBehaviour
     public GameObject enemy;
     private AudioSource alarmSound;
 
-    void Start() {
+    void Start()
+    {
         lr = GetComponent<LineRenderer>();
         alarmSound = GetComponent<AudioSource>();
 
         //Check if timed or not
-        if (timer != 0) {
+        if (timer != 0)
+        {
             StartCoroutine(ShootLaserAfterDelay());
         }
     }
 
-    void FixedUpdate() {
+    void FixedUpdate()
+    {
         ShootLaser();
     }
 
-    void ShootLaser() {
+    void ShootLaser()
+    {
         //turn off laser when not active
-        if(!active) {
+        if (!active)
+        {
             lr.SetPosition(1, new Vector3(0, 0, 0));
             return;
         }
@@ -43,19 +49,24 @@ public class LevelLaser : MonoBehaviour
         Vector3 directionVec = GetDirectionVector(direction);
         Vector3 end = Vector3.left * maxLength;
 
-        RaycastHit hit; 
-        if (Physics.Raycast(transform.position, directionVec, out hit, maxLength)) {
-            if (hit.distance * 2 <= maxLength) {
+        RaycastHit hit;
+        if (Physics.Raycast(transform.position, directionVec, out hit, maxLength))
+        {
+            if (hit.distance * 2 <= maxLength)
+            {
                 //get laser end point
                 end = Vector3.left * hit.distance * 2;
-                
+
                 //Check if object is player
-                if (hit.collider.name == "Player") {
-                    if (enemy != null) {
-                            EnemyController setPointFunc = enemy.GetComponent<EnemyController>();
-                            setPointFunc.Patrol(transform.position + directionVec *hit.distance);
-                        }
-                    if (!alarmSound.isPlaying) {
+                if (hit.collider.tag == "Player")
+                {
+                    if (enemy != null)
+                    {
+                        EnemyController setPointFunc = enemy.GetComponent<EnemyController>();
+                        setPointFunc.Patrol(transform.position + directionVec * hit.distance);
+                    }
+                    if (!alarmSound.isPlaying)
+                    {
                         alarmSound.Play();
                     }
                     //}
@@ -69,12 +80,14 @@ public class LevelLaser : MonoBehaviour
     //Handle timed laser
     IEnumerator ShootLaserAfterDelay()
     {
-        while(true) {
+        while (true)
+        {
             yield return new WaitForSeconds(timer);
             active = !active;
 
             //End if laser timer gets set to 0
-            if (timer == 0) {
+            if (timer == 0)
+            {
                 break;
             }
         }
@@ -83,7 +96,8 @@ public class LevelLaser : MonoBehaviour
     //Convert direction var to a vector
     Vector3 GetDirectionVector(LaserDirection direction)
     {
-        switch (direction){
+        switch (direction)
+        {
             case LaserDirection.posZ:
                 return Vector3.forward;
 
