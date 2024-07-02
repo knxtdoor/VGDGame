@@ -27,7 +27,7 @@ public class HologramController : MonoBehaviour
         if (hologramActive)
         {
             this.transform.position = Vector3.MoveTowards(this.transform.position, destination, hologramSpeed * Time.deltaTime);
-
+            animator.SetFloat("Speed", hologramSpeed);
 
             if (Vector3.Distance(this.transform.position, destination) < .05)
             {
