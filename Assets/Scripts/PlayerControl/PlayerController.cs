@@ -44,6 +44,10 @@ public class PlayerController : MonoBehaviour
     public GameObject holoPrefab;
     private HologramController activeHolo;
 
+
+    //Death handling
+    public DeathScreen deathScreen;
+
     // Start is called before the first frame update
     void Start()
     {
@@ -86,7 +90,6 @@ public class PlayerController : MonoBehaviour
         {
             rb.velocity = new Vector3(moveVec.x, rb.velocity.y, moveVec.z);
         }
-        Debug.Log(inputVec.y * playerMoveSpeed);
         animator.SetFloat("Speed", inputVec.y * playerMoveSpeed);
 
         // if (inputVec != Vector2.zero)
@@ -116,6 +119,7 @@ public class PlayerController : MonoBehaviour
         {
             cameraObj.transform.parent = null;
             gameObject.SetActive(false);
+            deathScreen.Trigger();
         }
     }
 
