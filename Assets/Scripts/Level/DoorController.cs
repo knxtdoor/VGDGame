@@ -1,6 +1,3 @@
-using System.Collections;
-using System.Collections.Generic;
-using UnityEditor.Animations;
 using UnityEngine;
 
 public class DoorController : MonoBehaviour
@@ -11,12 +8,6 @@ public class DoorController : MonoBehaviour
     void Start()
     {
         anim = GetComponent<Animator>();
-
-    }
-
-    // Update is called once per frame
-    void Update()
-    {
 
     }
 

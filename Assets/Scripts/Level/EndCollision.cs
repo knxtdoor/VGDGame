@@ -11,6 +11,7 @@ public class EndCollision : MonoBehaviour
         {
             SceneManager.LoadScene("TitleScreen");
             Time.timeScale = 1f;
+            Cursor.lockState = CursorLockMode.None;
         }
     }
 }
