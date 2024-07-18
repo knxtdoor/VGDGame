@@ -2,12 +2,15 @@ using UnityEngine;
 using System;
 using System.Collections;
 using System.Collections.Generic;
+using System.Linq;
 public class VisionCone : MonoBehaviour
 {
 
     private Mesh mesh;
     private float visionRange;
-    private double FOV;
+    private float FOV;
+    public List<Vector3> vertices;
+    private Transform parentTransform;
     void Start()
     {
         EnemyController parent = GetComponentInParent<EnemyController>();
@@ -15,11 +18,16 @@ public class VisionCone : MonoBehaviour
         {
             Debug.Log("Vision Cone is not attached to enemy!");
         }
+        parentTransform = GetComponentInParent<Transform>();
         this.visionRange = parent.visionRange + 1f;
         this.FOV = parent.FOV;
-
         MakeMesh();
 
+
+    }
+    void Update()
+    {
+        MakeMesh();
     }
 
 
@@ -28,32 +36,21 @@ public class VisionCone : MonoBehaviour
 
     void MakeMesh()
     {
+
         mesh = new Mesh();
-        List<Vector3> vertices = new List<Vector3>();
-        // vertices.Add(new Vector3(2, .1f, 2));
-        // vertices.Add(new Vector3(0, .1f, 0));
-        // vertices.Add(new Vector3(0, 2, 0));
-        double x, z;
-        x = visionRange * Math.Sin(-FOV);
-        z = visionRange * Math.Cos(-FOV);
-        vertices.Add(new Vector3((float)x, 0, (float)z));
-        vertices.Add(new Vector3(0, .1f, 0));
-        x = visionRange * Math.Sin(FOV);
-        z = visionRange * Math.Cos(FOV);
-        vertices.Add(new Vector3((float)x, 0, (float)z));
 
+        vertices = GenerateVertexList();
 
-        Vector2[] vertices2D = new Vector2[vertices.Count];
-
-        for (int i = 0; i < vertices.Count; i++)
+        List<int> triIndices = new List<int>();
+        for (int i = 1; i < vertices.Count - 1; i++)
         {
-            vertices2D[i] = vertices[i];
+            triIndices.Add(i);
+            triIndices.Add(0);
+            triIndices.Add(i + 1);
         }
-
-        Triangulator tri = new Triangulator(vertices2D);
-        int[] indices = tri.Triangulate();
+        triIndices.Reverse();
         mesh.vertices = vertices.ToArray();
-        mesh.triangles = indices;
+        mesh.triangles = triIndices.ToArray();
         mesh.RecalculateBounds();
         mesh.RecalculateNormals();
         this.gameObject.isStatic = false;
@@ -71,5 +68,39 @@ public class VisionCone : MonoBehaviour
 
 
         mesh.uv = uv;
+    }
+
+
+    List<Vector3> GenerateVertexList()
+    {
+        List<Vector3> vertexList = new List<Vector3>();
+        vertexList.Add(Vector3.zero);
+        float radianIncrement = Mathf.PI / 16;
+        float facingDirection = Mathf.Atan2(parentTransform.forward.x, parentTransform.forward.z);
+        // float facingDirection = 0;
+        float FOVrad = Mathf.Deg2Rad * FOV;
+        for (float i = -(FOVrad / 2); i < (FOVrad / 2); i += radianIncrement)
+        {
+            Vector3 currDirection = new Vector3(Mathf.Sin(facingDirection + i), 0, Mathf.Cos(facingDirection + i)).normalized;
+
+            Vector3 localCurrDirection = new Vector3(Mathf.Sin(i), 0, Mathf.Cos(i)).normalized;
+
+            float vertexDist = 0;
+            RaycastHit rayHit;
+            // Debug.DrawLine(transform.position, transform.position + (currDirection * visionRange));
+            if (Physics.Raycast(transform.position, currDirection, out rayHit, visionRange))
+            {
+                vertexDist = rayHit.distance;
+            }
+            else
+            {
+                vertexDist = visionRange;
+            }
+            Vector3 impactPoint = (localCurrDirection * vertexDist);
+
+            vertexList.Add(impactPoint);
+
+        }
+        return vertexList;
     }
 }

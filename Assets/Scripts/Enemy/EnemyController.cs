@@ -67,12 +67,13 @@ public class EnemyController : MonoBehaviour
 
     private void SetNextPatrolPoint(Vector3 location = default(Vector3))
     {
-        if (location == default(Vector3)) {
+        if (location == default(Vector3))
+        {
             if (moveTo == pointB)
             {
                 moveTo = pointA; // Move towards the start position
                 lookTo = pointA;
-            }   
+            }
             else
             {
                 moveTo = pointB; // Move towards the end position
@@ -80,7 +81,8 @@ public class EnemyController : MonoBehaviour
 
             }
         }
-        else {
+        else
+        {
             moveTo = location;
         }
         navMeshAgent.SetDestination(moveTo);

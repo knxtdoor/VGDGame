@@ -11,11 +11,13 @@ public class DoorButtonController : MonoBehaviour
     private DoorController doorController;
     public InputActionAsset actions;
     private InputAction interact;
+    private Animator anim;
     private bool indicatorActive = true;
     bool playerInRange;
     void Start()
     {
         interact = actions.FindActionMap("Player").FindAction("Interact");
+        anim = GetComponent<Animator>();
         doorController = door.GetComponent<DoorController>();
 
     }
@@ -23,9 +25,11 @@ public class DoorButtonController : MonoBehaviour
     // Update is called once per frame
     void Update()
     {
+
         if (interact.ReadValue<float>() > 0 && playerInRange)
         {
             doorController.OpenDoor();
+            anim.Play("ButtonPressAnimation");
             if (indicatorActive)
             {
                 this.GetComponentInChildren<InteractableIndicator>().gameObject.SetActive(false);

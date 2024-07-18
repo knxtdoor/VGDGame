@@ -3137,6 +3137,7 @@ GameObject:
   - component: {fileID: 3658377684932996260}
   - component: {fileID: 3658377684932996261}
   - component: {fileID: 3658377684932996262}
+  - component: {fileID: -2138063127804112584}
   m_Layer: 0
   m_Name: ModeledPlayer
   m_TagString: Player
@@ -3239,6 +3240,20 @@ MonoBehaviour:
   wallDetectionDistance: 0.5
   cameraObj: {fileID: 3658377686447642246}
   holoPrefab: {fileID: 6044945711372487914, guid: 23a93d9f4dc1af64cb364db72e8b747e, type: 3}
+  deathScreen: {fileID: 0}
+--- !u!114 &-2138063127804112584
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 4468770186960867816}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 0143c015651c54c0a8a8ccf0e0b711f4, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  smoothingTimeFactor: 0.5
 --- !u!1 &4474405181433828401
 GameObject:
   m_ObjectHideFlags: 0
