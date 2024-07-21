@@ -4,11 +4,11 @@ public class DoorController : MonoBehaviour
 {
     // Start is called before the first frame update
     private Animator anim;
-    private bool isOpen;
+    public bool isOpen;
     void Start()
     {
         anim = GetComponent<Animator>();
-
+        anim.SetBool("isOpen", isOpen);
     }
 
 
