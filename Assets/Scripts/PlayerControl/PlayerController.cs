@@ -164,4 +164,9 @@ public class PlayerController : MonoBehaviour
             activeHolo.DispatchHologram(holoDest);
         }
     }
+    public void InteractAnimation()
+    {
+        Debug.Log("InteractAnimation called");
+        animator.SetTrigger("Interact");
+    }
 }
