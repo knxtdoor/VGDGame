@@ -9,9 +9,6 @@ using UnityEngine.InputSystem;
 [RequireComponent(typeof(Animator), typeof(Rigidbody), typeof(CapsuleCollider))]
 public class PlayerController : MonoBehaviour
 {
-
-
-
     //Input related constants
     public InputActionAsset actions;
     private InputAction moveAction;
@@ -25,25 +22,20 @@ public class PlayerController : MonoBehaviour
     private Rigidbody rb;
     private float playerMoveSpeed = .3f;
 
-    public float baseSpeed = 3f;
-    public float sprintSpeed = 4.5f;
-    public float walkSpeed = 1.5f;
+    public float baseSpeed = 1f;
+    public float sprintSpeed = 1.5f;
+    public float walkSpeed = 0.5f;
 
     private Animator animator;
 
     public float wallDetectionDistance = 0.5f;
 
-
-
     //Camera control constants
     public GameObject cameraObj;
-
-
 
     //Hologram ability constants
     public GameObject holoPrefab;
     private HologramController activeHolo;
-
 
     //Death handling
     public DeathScreen deathScreen;
@@ -72,7 +64,6 @@ public class PlayerController : MonoBehaviour
         //update player speed
         getSpeed();
 
-
         ThirdPersonCamera tpc = cameraObj.GetComponent<ThirdPersonCamera>();
         float mouseX = look.ReadValue<Vector2>().x;
         transform.Rotate(new Vector3(0, mouseX * tpc.sensitivity, 0));
@@ -89,9 +80,10 @@ public class PlayerController : MonoBehaviour
         if (!IsHittingWall(moveVec))
         {
             rb.velocity = new Vector3(moveVec.x, rb.velocity.y, moveVec.z);
+
         }
-        animator.SetFloat("Speed", inputVec.y * playerMoveSpeed);
-        animator.SetFloat("SpeedHorizontal", inputVec.x * playerMoveSpeed);
+        animator.SetFloat("vely", (inputVec.y * playerMoveSpeed));
+        animator.SetFloat("velx", (inputVec.x * playerMoveSpeed));
         
         if (doHologram.ReadValue<float>() > 0)
         {
