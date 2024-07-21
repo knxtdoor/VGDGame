@@ -67,9 +67,14 @@ public class EnemyController : MonoBehaviour
 
     private void SetNextPatrolPoint(Vector3 location = default(Vector3))
     {
+
         if (location == default(Vector3))
         {
-            if (moveTo == pointB)
+            if (pointB.y < 0)
+            {
+                moveTo = pointA;
+            }
+            else if (moveTo == pointB)
             {
                 moveTo = pointA; // Move towards the start position
                 lookTo = pointA;
