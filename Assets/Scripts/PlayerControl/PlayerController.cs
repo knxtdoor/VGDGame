@@ -91,14 +91,8 @@ public class PlayerController : MonoBehaviour
             rb.velocity = new Vector3(moveVec.x, rb.velocity.y, moveVec.z);
         }
         animator.SetFloat("Speed", inputVec.y * playerMoveSpeed);
-
-        // if (inputVec != Vector2.zero)
-        // {
-        //     Quaternion facing = Quaternion.LookRotation(new Vector3(moveVec.z, 0, Mathf.Abs(moveVec.x)));
-        //     transform.rotation = Quaternion.Slerp(transform.rotation, facing, Time.deltaTime * 2f);
-        //     //Handle the hologram ability
-
-        // }
+        animator.SetFloat("SpeedHorizontal", inputVec.x * playerMoveSpeed);
+        
         if (doHologram.ReadValue<float>() > 0)
         {
             HandleHologram();
@@ -125,13 +119,15 @@ public class PlayerController : MonoBehaviour
 
     void OnAnimatorMove()
     {
-        // if (animator)
-        // {
-        //     Vector3 newPosition = animator.rootPosition;
-        //     newPosition.y = rb.position.y;
-        //     rb.MovePosition(newPosition);
-        //     rb.MoveRotation(animator.rootRotation);
-        // }
+        if (animator)
+        {
+            Vector3 newPosition = animator.rootPosition;
+            newPosition.y = rb.position.y;
+            rb.MovePosition(newPosition);
+
+            Quaternion newRotation = animator.rootRotation;
+            rb.MoveRotation(newRotation);
+        }
     }
     void getSpeed()
     {
