@@ -7365,6 +7365,10 @@ PrefabInstance:
       propertyPath: m_Name
       value: robotSphere_finalize (1)
       objectReference: {fileID: 0}
+    - target: {fileID: 3141654400950854202, guid: 639eb95e913dcd9439856538fc6c5600, type: 3}
+      propertyPath: m_IsActive
+      value: 0
+      objectReference: {fileID: 0}
     - target: {fileID: 8154179463751792290, guid: 639eb95e913dcd9439856538fc6c5600, type: 3}
       propertyPath: player
       value: 
@@ -8728,6 +8732,17 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   smoothingTimeFactor: 0.5
+--- !u!114 &858034398 stripped
+MonoBehaviour:
+  m_CorrespondingSourceObject: {fileID: 3658377684932996262, guid: 2e08a6e3203117b49bf593bf5511dfb6, type: 3}
+  m_PrefabInstance: {fileID: 441191459}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 858034391}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: c04b009a43754b2498cde2c20e85939d, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
 --- !u!1 &858283389
 GameObject:
   m_ObjectHideFlags: 0
@@ -10222,6 +10237,10 @@ PrefabInstance:
       propertyPath: door
       value: 
       objectReference: {fileID: 1317006071}
+    - target: {fileID: 8592214284262663046, guid: 7f64979ccae8d8443a98024f4f1241c3, type: 3}
+      propertyPath: playerController
+      value: 
+      objectReference: {fileID: 858034398}
     m_RemovedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: 7f64979ccae8d8443a98024f4f1241c3, type: 3}
 --- !u!1001 &1012991160
@@ -14464,6 +14483,10 @@ PrefabInstance:
       propertyPath: door
       value: 
       objectReference: {fileID: 310809660}
+    - target: {fileID: 8592214284262663046, guid: 7f64979ccae8d8443a98024f4f1241c3, type: 3}
+      propertyPath: playerController
+      value: 
+      objectReference: {fileID: 858034398}
     m_RemovedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: 7f64979ccae8d8443a98024f4f1241c3, type: 3}
 --- !u!1 &1514023625 stripped
@@ -19088,6 +19111,10 @@ PrefabInstance:
     - target: {fileID: 3141654400950854202, guid: 639eb95e913dcd9439856538fc6c5600, type: 3}
       propertyPath: m_Name
       value: robotSphere_finalize
+      objectReference: {fileID: 0}
+    - target: {fileID: 3141654400950854202, guid: 639eb95e913dcd9439856538fc6c5600, type: 3}
+      propertyPath: m_IsActive
+      value: 0
       objectReference: {fileID: 0}
     - target: {fileID: 8154179463751792290, guid: 639eb95e913dcd9439856538fc6c5600, type: 3}
       propertyPath: player

@@ -40,6 +40,11 @@ public class PlayerController : MonoBehaviour
     //Death handling
     public DeathScreen deathScreen;
 
+    private float previousVelX = 0f;
+    private float previousVelY = 0f;
+    public float smoothingFactorX = 10f;
+    public float smoothingFactorY = 10f;
+
     // Start is called before the first frame update
     void Start()
     {
@@ -82,8 +87,14 @@ public class PlayerController : MonoBehaviour
             rb.velocity = new Vector3(moveVec.x, rb.velocity.y, moveVec.z);
 
         }
-        animator.SetFloat("vely", (inputVec.y * playerMoveSpeed));
-        animator.SetFloat("velx", (inputVec.x * playerMoveSpeed));
+        float targetVelX = inputVec.x * playerMoveSpeed;
+        float targetVelY = inputVec.y * playerMoveSpeed;
+
+        previousVelX = Mathf.Lerp(previousVelX, targetVelX, Time.deltaTime * smoothingFactorX);
+        previousVelY = Mathf.Lerp(previousVelY, targetVelY, Time.deltaTime * smoothingFactorY);
+
+        animator.SetFloat("velx", previousVelX);
+        animator.SetFloat("vely", previousVelY);
         
         if (doHologram.ReadValue<float>() > 0)
         {
