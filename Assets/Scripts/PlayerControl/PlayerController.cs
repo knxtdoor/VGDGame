@@ -5,6 +5,7 @@ using System.Security.Cryptography.X509Certificates;
 using Unity.VisualScripting;
 using UnityEngine;
 using UnityEngine.InputSystem;
+using UnityEngine.SceneManagement;
 
 [RequireComponent(typeof(Animator), typeof(Rigidbody), typeof(CapsuleCollider))]
 public class PlayerController : MonoBehaviour
@@ -100,7 +101,12 @@ public class PlayerController : MonoBehaviour
         {
             HandleHologram();
         }
-
+        if (transform.position.y < -100)
+        {
+            cameraObj.transform.parent = null;
+            gameObject.SetActive(false);
+            deathScreen.Trigger();
+        }
     }
 
 
