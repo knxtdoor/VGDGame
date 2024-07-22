@@ -3,6 +3,7 @@ using System;
 using UnityEngine;
 using UnityEngine.AI;
 using System.Collections;
+using System.Collections.Generic;
 
 public enum EnemyState
 {
@@ -18,8 +19,14 @@ public class EnemyController : MonoBehaviour
     public float rotateSpeed = 220f;
     public Transform player;
 
-    public Vector3 pointA = new Vector3(0, 1, 15); //location to move from
-    public Vector3 pointB = new Vector3(10, 1, 15); //location to move towrds
+    // public Vector3 pointA = new Vector3(0, 1, 15); //location to move from
+    // public Vector3 pointB = new Vector3(10, 1, 15); //location to move towrds
+
+    public List<Vector3> patrolPoints = new List<Vector3>(){
+         new Vector3(0, 1, 15),
+          new Vector3(10, 1, 15)
+    };
+    public int currPatrolPoint = 0;
     private Vector3 moveTo;
     private Vector3 lookTo;
 
@@ -44,8 +51,8 @@ public class EnemyController : MonoBehaviour
         navMeshAgent = GetComponent<NavMeshAgent>();
         navMeshAgent.speed = speed;
         currentState = EnemyState.Patrolling;
-        moveTo = pointB;
-        lookTo = pointB;
+        moveTo = patrolPoints[currPatrolPoint];
+        lookTo = patrolPoints[currPatrolPoint];
         SetNextPatrolPoint();
         velocityReporter = player.GetComponent<VelocityReporter>();
         anim = GetComponent<Animator>();
@@ -74,21 +81,13 @@ public class EnemyController : MonoBehaviour
 
         if (location == default(Vector3))
         {
-            if (pointB.y < 0)
+            currPatrolPoint++;
+            if (currPatrolPoint == patrolPoints.Count)
             {
-                moveTo = pointA;
+                currPatrolPoint = 0;
             }
-            else if (moveTo == pointB)
-            {
-                moveTo = pointA; // Move towards the start position
-                lookTo = pointA;
-            }
-            else
-            {
-                moveTo = pointB; // Move towards the end position
-                lookTo = pointB;
-
-            }
+            moveTo = patrolPoints[currPatrolPoint];
+            lookTo = patrolPoints[currPatrolPoint];
         }
         else
         {
