@@ -28,7 +28,7 @@ public class ThirdPersonCamera : MonoBehaviour
 
         //Read mouse input for camera rotation
         Vector2 mouseRead = mouse.ReadValue<Vector2>();
-        rotateVertical = mouseRead.y;
+        rotateVertical = -mouseRead.y;
 
         //Rotate camera based on mouse input, ignoring collisions
         transform.RotateAround(player.transform.position, transform.right, rotateVertical * sensitivity);
@@ -69,7 +69,10 @@ public class ThirdPersonCamera : MonoBehaviour
         }
 
     }
-
+    public void ChangeSensitivity(float val)
+    {
+        this.sensitivity = val;
+    }
 
 
 }

@@ -114,9 +114,7 @@ public class PlayerController : MonoBehaviour
 
         if (collision.gameObject.tag == "Enemy")
         {
-            cameraObj.transform.parent = null;
-            gameObject.SetActive(false);
-            deathScreen.Trigger();
+            Kill();
         }
     }
 
@@ -174,6 +172,13 @@ public class PlayerController : MonoBehaviour
             Vector3 holoDest = this.transform.position + (this.transform.forward * 10);
             activeHolo.DispatchHologram(holoDest);
         }
+    }
+
+    public void Kill()
+    {
+        cameraObj.transform.parent = null;
+        gameObject.SetActive(false);
+        deathScreen.Trigger();
     }
     public void InteractAnimation()
     {

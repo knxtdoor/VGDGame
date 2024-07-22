@@ -108,6 +108,7 @@ GameObject:
   m_Component:
   - component: {fileID: 8592214284262663041}
   - component: {fileID: 8592214284262663046}
+  - component: {fileID: 4327227714642327983}
   m_Layer: 0
   m_Name: DoorButton
   m_TagString: Untagged
@@ -148,6 +149,28 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   door: {fileID: 0}
   actions: {fileID: -944628639613478452, guid: cac7a74518c4f4d4fb96342ab43aaba1, type: 3}
+  playerController: {fileID: 0}
+--- !u!95 &4327227714642327983
+Animator:
+  serializedVersion: 5
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 8592214284262663040}
+  m_Enabled: 1
+  m_Avatar: {fileID: 0}
+  m_Controller: {fileID: 9100000, guid: 6af5210c1242be24c92561ad369d71fa, type: 2}
+  m_CullingMode: 0
+  m_UpdateMode: 0
+  m_ApplyRootMotion: 0
+  m_LinearVelocityBlending: 0
+  m_StabilizeFeet: 0
+  m_WarningMessage: 
+  m_HasTransformHierarchy: 1
+  m_AllowConstantClipSamplingOptimization: 1
+  m_KeepAnimatorStateOnDisable: 0
+  m_WriteDefaultValuesOnDisable: 0
 --- !u!1 &8592214284833236266
 GameObject:
   m_ObjectHideFlags: 0
@@ -161,7 +184,7 @@ GameObject:
   - component: {fileID: 8592214284833236264}
   - component: {fileID: 8592214284833236271}
   - component: {fileID: 8592214284833236268}
-  m_Layer: 0
+  m_Layer: 2
   m_Name: TriggerZone
   m_TagString: Untagged
   m_Icon: {fileID: 0}

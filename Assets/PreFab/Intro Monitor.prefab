@@ -257,7 +257,7 @@ GameObject:
   - component: {fileID: 4398362475918965087}
   - component: {fileID: 4398362475918965084}
   - component: {fileID: 4398362475918965081}
-  m_Layer: 0
+  m_Layer: 2
   m_Name: TriggerZone
   m_TagString: Untagged
   m_Icon: {fileID: 0}
