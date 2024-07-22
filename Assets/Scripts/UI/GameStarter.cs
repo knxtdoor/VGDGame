@@ -6,8 +6,9 @@ using UnityEngine;
 public class GameStarter : MonoBehaviour
 {
 
-    public void StartGame(){
-        SceneManager.LoadScene("SampleSceneCopy");
+    public void StartGame()
+    {
         Time.timeScale = 1f;
+        SceneManager.LoadScene("Luting_map");
     }
 }

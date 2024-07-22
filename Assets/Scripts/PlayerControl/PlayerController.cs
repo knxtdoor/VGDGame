@@ -6,6 +6,7 @@ using Unity.VisualScripting;
 using UnityEngine;
 using UnityEngine.InputSystem;
 
+[RequireComponent(typeof(Animator), typeof(Rigidbody), typeof(CapsuleCollider))]
 public class PlayerController : MonoBehaviour
 {
 
@@ -22,11 +23,16 @@ public class PlayerController : MonoBehaviour
 
     //Movement and speed constants
     private Rigidbody rb;
-    public float playerMoveSpeed = .3f;
+    private float playerMoveSpeed = .3f;
 
     public float baseSpeed = 3f;
     public float sprintSpeed = 4.5f;
     public float walkSpeed = 1.5f;
+
+    private Animator animator;
+
+    public float wallDetectionDistance = 0.5f;
+
 
 
     //Camera control constants
@@ -37,6 +43,10 @@ public class PlayerController : MonoBehaviour
     //Hologram ability constants
     public GameObject holoPrefab;
     private HologramController activeHolo;
+
+
+    //Death handling
+    public DeathScreen deathScreen;
 
     // Start is called before the first frame update
     void Start()
@@ -52,7 +62,8 @@ public class PlayerController : MonoBehaviour
 
 
         rb = gameObject.GetComponent<Rigidbody>();
-
+        animator = GetComponent<Animator>();
+        rb.interpolation = RigidbodyInterpolation.Interpolate;
     }
 
     // Update is called once per frame
@@ -68,18 +79,32 @@ public class PlayerController : MonoBehaviour
 
         //Get movement (WASD) input, and create movement vector
         Vector2 inputVec = moveAction.ReadValue<Vector2>();
+
         Vector3 moveVec = (transform.forward * (inputVec.y * playerMoveSpeed)) + (transform.right * (inputVec.x * playerMoveSpeed));
         moveVec.y = rb.velocity.y;
         rb.velocity = moveVec;
 
+        moveVec *= playerMoveSpeed;
 
-        //Handle the hologram ability
+        if (!IsHittingWall(moveVec))
+        {
+            rb.velocity = new Vector3(moveVec.x, rb.velocity.y, moveVec.z);
+        }
+        animator.SetFloat("Speed", inputVec.y * playerMoveSpeed);
+
+        // if (inputVec != Vector2.zero)
+        // {
+        //     Quaternion facing = Quaternion.LookRotation(new Vector3(moveVec.z, 0, Mathf.Abs(moveVec.x)));
+        //     transform.rotation = Quaternion.Slerp(transform.rotation, facing, Time.deltaTime * 2f);
+        //     //Handle the hologram ability
+
+        // }
         if (doHologram.ReadValue<float>() > 0)
         {
             HandleHologram();
         }
-    }
 
+    }
 
 
     void OnEnable()
@@ -89,15 +114,25 @@ public class PlayerController : MonoBehaviour
 
     void OnCollisionEnter(Collision collision)
     {
-        Debug.Log(collision.gameObject.name);
 
         if (collision.gameObject.tag == "Enemy")
         {
             cameraObj.transform.parent = null;
             gameObject.SetActive(false);
+            deathScreen.Trigger();
         }
     }
 
+    void OnAnimatorMove()
+    {
+        // if (animator)
+        // {
+        //     Vector3 newPosition = animator.rootPosition;
+        //     newPosition.y = rb.position.y;
+        //     rb.MovePosition(newPosition);
+        //     rb.MoveRotation(animator.rootRotation);
+        // }
+    }
     void getSpeed()
     {
 
@@ -115,6 +150,20 @@ public class PlayerController : MonoBehaviour
         }
     }
 
+    bool IsHittingWall(Vector3 moveDirection)
+    {
+        RaycastHit hit;
+        Vector3 origin = transform.position + Vector3.up * 0.5f;
+
+        if (Physics.Raycast(origin, moveDirection, out hit, wallDetectionDistance))
+        {
+            if (hit.collider.tag != "Ground")
+            {
+                return true;
+            }
+        }
+        return false;
+    }
     void HandleHologram()
     {
         if (activeHolo == null)
