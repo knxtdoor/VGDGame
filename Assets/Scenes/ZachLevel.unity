@@ -6251,7 +6251,7 @@ PrefabInstance:
     m_Modifications:
     - target: {fileID: 108012326883433976, guid: 3efa8d90dd1f53f40b51d953227468d6, type: 3}
       propertyPath: m_Name
-      value: nc-ORB1-1
+      value: EndOrb
       objectReference: {fileID: 0}
     - target: {fileID: 2915690748129224336, guid: 3efa8d90dd1f53f40b51d953227468d6, type: 3}
       propertyPath: m_Enabled

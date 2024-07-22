@@ -3017,6 +3017,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 69330fb0cfd4f4e52a51f9686d2739ae, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  currLevel: 0
 --- !u!135 &285323437
 SphereCollider:
   m_ObjectHideFlags: 0
@@ -13215,6 +13216,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 69330fb0cfd4f4e52a51f9686d2739ae, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  currLevel: 0
 --- !u!1 &1353768182
 GameObject:
   m_ObjectHideFlags: 0
@@ -17777,6 +17779,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 69330fb0cfd4f4e52a51f9686d2739ae, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  currLevel: 0
 --- !u!1 &1786825755
 GameObject:
   m_ObjectHideFlags: 0
