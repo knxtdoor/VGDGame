@@ -2,6 +2,7 @@
 using System;
 using UnityEngine;
 using UnityEngine.AI;
+using System.Collections;
 
 public enum EnemyState
 {
@@ -33,6 +34,7 @@ public class EnemyController : MonoBehaviour
     private EnemyState currentState;
     private VelocityReporter velocityReporter;
     private Animator anim;
+    private bool isPaused = false;
     public float maxLookaheadTime = 2.0f;
 
 
@@ -54,6 +56,8 @@ public class EnemyController : MonoBehaviour
     // Update is called once per frame
     void FixedUpdate()
     {
+        if (isPaused) return;
+        
         switch (currentState)
         {
             case EnemyState.Patrolling:
@@ -150,5 +154,23 @@ public class EnemyController : MonoBehaviour
                 }
             }
         }
+    }
+
+    public void PauseForSeconds(float seconds)
+    {
+        StartCoroutine(PauseCoroutine(seconds));
+    }
+
+    private IEnumerator PauseCoroutine(float seconds)
+    {
+        isPaused = true;
+        navMeshAgent.isStopped = true;
+        anim.SetBool("active", false);
+
+        yield return new WaitForSeconds(seconds);
+
+        navMeshAgent.isStopped = false;
+        anim.SetBool("active", true);
+        isPaused = false;
     }
 }

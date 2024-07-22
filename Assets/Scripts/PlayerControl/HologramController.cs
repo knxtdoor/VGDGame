@@ -28,6 +28,7 @@ public class HologramController : MonoBehaviour
         if (hologramActive)
         {
             this.transform.position = Vector3.MoveTowards(this.transform.position, destination, hologramSpeed * Time.deltaTime);
+            animator.SetBool("active", hologramActive);
             animator.SetFloat("Speed", hologramSpeed);
             this.timeout = timeout - Time.deltaTime;
             if (timeout <= 0)
