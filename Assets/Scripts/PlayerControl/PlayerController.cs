@@ -95,7 +95,7 @@ public class PlayerController : MonoBehaviour
 
         animator.SetFloat("velx", previousVelX);
         animator.SetFloat("vely", previousVelY);
-        
+
         if (doHologram.ReadValue<float>() > 0)
         {
             HandleHologram();
@@ -177,7 +177,6 @@ public class PlayerController : MonoBehaviour
     }
     public void InteractAnimation()
     {
-        Debug.Log("InteractAnimation called");
         animator.SetTrigger("Interact");
     }
 }
