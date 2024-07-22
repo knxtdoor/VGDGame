@@ -9,9 +9,6 @@ using UnityEngine.InputSystem;
 [RequireComponent(typeof(Animator), typeof(Rigidbody), typeof(CapsuleCollider))]
 public class PlayerController : MonoBehaviour
 {
-
-
-
     //Input related constants
     public InputActionAsset actions;
     private InputAction moveAction;
@@ -25,28 +22,28 @@ public class PlayerController : MonoBehaviour
     private Rigidbody rb;
     private float playerMoveSpeed = .3f;
 
-    public float baseSpeed = 3f;
-    public float sprintSpeed = 4.5f;
-    public float walkSpeed = 1.5f;
+    public float baseSpeed = 1f;
+    public float sprintSpeed = 1.5f;
+    public float walkSpeed = 0.5f;
 
     private Animator animator;
 
     public float wallDetectionDistance = 0.5f;
 
-
-
     //Camera control constants
     public GameObject cameraObj;
-
-
 
     //Hologram ability constants
     public GameObject holoPrefab;
     private HologramController activeHolo;
 
-
     //Death handling
     public DeathScreen deathScreen;
+
+    private float previousVelX = 0f;
+    private float previousVelY = 0f;
+    public float smoothingFactorX = 10f;
+    public float smoothingFactorY = 10f;
 
     // Start is called before the first frame update
     void Start()
@@ -72,7 +69,6 @@ public class PlayerController : MonoBehaviour
         //update player speed
         getSpeed();
 
-
         ThirdPersonCamera tpc = cameraObj.GetComponent<ThirdPersonCamera>();
         float mouseX = look.ReadValue<Vector2>().x;
         transform.Rotate(new Vector3(0, mouseX * tpc.sensitivity, 0));
@@ -89,16 +85,17 @@ public class PlayerController : MonoBehaviour
         if (!IsHittingWall(moveVec))
         {
             rb.velocity = new Vector3(moveVec.x, rb.velocity.y, moveVec.z);
+
         }
-        animator.SetFloat("Speed", inputVec.y * playerMoveSpeed);
+        float targetVelX = inputVec.x * playerMoveSpeed;
+        float targetVelY = inputVec.y * playerMoveSpeed;
 
-        // if (inputVec != Vector2.zero)
-        // {
-        //     Quaternion facing = Quaternion.LookRotation(new Vector3(moveVec.z, 0, Mathf.Abs(moveVec.x)));
-        //     transform.rotation = Quaternion.Slerp(transform.rotation, facing, Time.deltaTime * 2f);
-        //     //Handle the hologram ability
+        previousVelX = Mathf.Lerp(previousVelX, targetVelX, Time.deltaTime * smoothingFactorX);
+        previousVelY = Mathf.Lerp(previousVelY, targetVelY, Time.deltaTime * smoothingFactorY);
 
-        // }
+        animator.SetFloat("velx", previousVelX);
+        animator.SetFloat("vely", previousVelY);
+
         if (doHologram.ReadValue<float>() > 0)
         {
             HandleHologram();
@@ -125,13 +122,15 @@ public class PlayerController : MonoBehaviour
 
     void OnAnimatorMove()
     {
-        // if (animator)
-        // {
-        //     Vector3 newPosition = animator.rootPosition;
-        //     newPosition.y = rb.position.y;
-        //     rb.MovePosition(newPosition);
-        //     rb.MoveRotation(animator.rootRotation);
-        // }
+        if (animator)
+        {
+            Vector3 newPosition = animator.rootPosition;
+            newPosition.y = rb.position.y;
+            rb.MovePosition(newPosition);
+
+            Quaternion newRotation = animator.rootRotation;
+            rb.MoveRotation(newRotation);
+        }
     }
     void getSpeed()
     {
@@ -175,5 +174,9 @@ public class PlayerController : MonoBehaviour
             Vector3 holoDest = this.transform.position + (this.transform.forward * 10);
             activeHolo.DispatchHologram(holoDest);
         }
+    }
+    public void InteractAnimation()
+    {
+        animator.SetTrigger("Interact");
     }
 }
