@@ -11,6 +11,8 @@ public class EnemyButtonController : MonoBehaviour
     private InputAction interact;
     public float time = 3f;
     private bool playerInRange;
+    private bool indicatorActive = true;
+
 
     void Start()
     {
@@ -28,6 +30,11 @@ public class EnemyButtonController : MonoBehaviour
         Debug.Log("check set up.");
         if (interact.ReadValue<float>() > 0 && playerInRange)
         {
+            if (indicatorActive)
+            {
+                this.GetComponentInChildren<InteractableIndicator>().gameObject.SetActive(false);
+                indicatorActive = false;
+            }
             Debug.Log("successfully set up.");
             enemyController.PauseForSeconds(time);
         }

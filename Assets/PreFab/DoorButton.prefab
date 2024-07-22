@@ -149,6 +149,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   door: {fileID: 0}
   actions: {fileID: -944628639613478452, guid: cac7a74518c4f4d4fb96342ab43aaba1, type: 3}
+  playerController: {fileID: 0}
 --- !u!95 &4327227714642327983
 Animator:
   serializedVersion: 5
@@ -183,7 +184,7 @@ GameObject:
   - component: {fileID: 8592214284833236264}
   - component: {fileID: 8592214284833236271}
   - component: {fileID: 8592214284833236268}
-  m_Layer: 0
+  m_Layer: 2
   m_Name: TriggerZone
   m_TagString: Untagged
   m_Icon: {fileID: 0}

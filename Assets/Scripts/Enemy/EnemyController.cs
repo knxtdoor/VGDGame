@@ -57,7 +57,7 @@ public class EnemyController : MonoBehaviour
     void FixedUpdate()
     {
         if (isPaused) return;
-        
+
         switch (currentState)
         {
             case EnemyState.Patrolling:
