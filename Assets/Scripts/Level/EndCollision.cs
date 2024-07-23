@@ -10,14 +10,14 @@ public class EndCollision : MonoBehaviour
         "Luting_map",
         "ZachLevel",
         "Will_Map",
-        "Sagar_Level"
+        "Sagar_Level",
+        "EndGame"
     };
     public int currLevel = 0;
     private void OnTriggerEnter(Collider other)
     {
         if (other.CompareTag("Player"))
         {
-            Debug.Log("Trigger enter");
 
             SceneManager.LoadScene(levelNames[currLevel + 1]);
             Time.timeScale = 1f;
