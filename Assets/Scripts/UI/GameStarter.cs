@@ -12,4 +12,10 @@ public class GameStarter : MonoBehaviour
         Time.timeScale = 1f;
         SceneManager.LoadScene(LevelManager.instance.currLevelName);
     }
+
+    public void TitleScreen()
+    {
+        Time.timeScale = 1f;
+        SceneManager.LoadScene("TitleScreen");
+    }
 }
