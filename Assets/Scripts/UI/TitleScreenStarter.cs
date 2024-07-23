@@ -1,15 +1,15 @@
-﻿using UnityEngine.SceneManagement;
+using UnityEngine.SceneManagement;
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
-public class GameStarter : MonoBehaviour
+public class TitleScreenStarter : MonoBehaviour
 {
 
     public void StartGame()
     {
 
         Time.timeScale = 1f;
-        SceneManager.LoadScene(LevelManager.instance.currLevelName);
+        SceneManager.LoadScene("Luting_map");
     }
 }

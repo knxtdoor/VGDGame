@@ -9,14 +9,16 @@ public class EndCollision : MonoBehaviour
     private List<string> levelNames = new List<string>(){
         "Luting_map",
         "ZachLevel",
-        "WillLevel",
-        "SagarLevel"
+        "Will_Map",
+        "Sagar_Level"
     };
     public int currLevel = 0;
     private void OnTriggerEnter(Collider other)
     {
         if (other.CompareTag("Player"))
         {
+            Debug.Log("Trigger enter");
+
             SceneManager.LoadScene(levelNames[currLevel + 1]);
             Time.timeScale = 1f;
         }
