@@ -27,7 +27,6 @@ public class EnemyButtonController : MonoBehaviour
 
     void Update()
     {
-        Debug.Log("check set up.");
         if (interact.ReadValue<float>() > 0 && playerInRange)
         {
             if (indicatorActive)

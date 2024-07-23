@@ -3234,13 +3234,15 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   actions: {fileID: -944628639613478452, guid: cac7a74518c4f4d4fb96342ab43aaba1, type: 3}
-  baseSpeed: 2
-  sprintSpeed: 3
-  walkSpeed: 1
+  baseSpeed: 1
+  sprintSpeed: 2
+  walkSpeed: 0.5
   wallDetectionDistance: 0.5
   cameraObj: {fileID: 3658377686447642246}
   holoPrefab: {fileID: 6044945711372487914, guid: 23a93d9f4dc1af64cb364db72e8b747e, type: 3}
   deathScreen: {fileID: 0}
+  smoothingFactorX: 10
+  smoothingFactorY: 10
 --- !u!114 &-2138063127804112584
 MonoBehaviour:
   m_ObjectHideFlags: 0

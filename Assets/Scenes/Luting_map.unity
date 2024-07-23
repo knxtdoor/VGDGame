@@ -3017,6 +3017,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 69330fb0cfd4f4e52a51f9686d2739ae, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  currLevel: 0
 --- !u!135 &285323437
 SphereCollider:
   m_ObjectHideFlags: 0
@@ -7814,6 +7815,51 @@ PrefabInstance:
       objectReference: {fileID: 0}
     m_RemovedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: 1009ea8ecb4cdd34c93752b56ffa4c50, type: 3}
+--- !u!1 &774721281
+GameObject:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  serializedVersion: 6
+  m_Component:
+  - component: {fileID: 774721283}
+  - component: {fileID: 774721282}
+  m_Layer: 0
+  m_Name: LevelManager
+  m_TagString: Untagged
+  m_Icon: {fileID: 0}
+  m_NavMeshLayer: 0
+  m_StaticEditorFlags: 0
+  m_IsActive: 1
+--- !u!114 &774721282
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 774721281}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: a9a0be7830114ab4488757cafdff1ade, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  currLevelName: luting_map
+--- !u!4 &774721283
+Transform:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 774721281}
+  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
+  m_LocalPosition: {x: -2.4225175, y: -7.0126057, z: 2.086179}
+  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_ConstrainProportionsScale: 0
+  m_Children: []
+  m_Father: {fileID: 0}
+  m_RootOrder: 35
+  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!4 &782662884 stripped
 Transform:
   m_CorrespondingSourceObject: {fileID: 4154227994129152, guid: aa316a49adc2f084fac5ab6a40e5a8a3, type: 3}
@@ -13343,6 +13389,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 69330fb0cfd4f4e52a51f9686d2739ae, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  currLevel: 0
 --- !u!1 &1353768182
 GameObject:
   m_ObjectHideFlags: 0
@@ -17905,6 +17952,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 69330fb0cfd4f4e52a51f9686d2739ae, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  currLevel: 0
 --- !u!1 &1786825755
 GameObject:
   m_ObjectHideFlags: 0
