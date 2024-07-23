@@ -8,7 +8,14 @@ public class GameStarter : MonoBehaviour
 
     public void StartGame()
     {
+
         Time.timeScale = 1f;
-        SceneManager.LoadScene("Luting_map");
+        SceneManager.LoadScene(LevelManager.instance.currLevelName);
+    }
+
+    public void TitleScreen()
+    {
+        Time.timeScale = 1f;
+        SceneManager.LoadScene("TitleScreen");
     }
 }
