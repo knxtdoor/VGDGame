@@ -2,37 +2,104 @@ Team Sunfall - Neon Veil
 
 The start scene is "TitleScreen"
 
-The game is played by manuevering the player through the level from the start point to the green orb which marks the end point. The player can be moved with arrow keys or wasd. Sprint is activated with the shift key. The E button deploys a hologram. F interacts with the environment.
 
-Throughout the level, the player comes across technological obstacles which must be overcome. Towards the beginning, there is a path with red lasers throughout it, and one facing down it. If any of these are triggered by the player it notifies an enemy to investigate. This enemy has a vision radius which is viewable by the player. If the player is within this cone, the enemy will engage and will kill the player if contact is made, ending the game. If the player escapes from the cone, the enemy will return to its patrolling route. To advance through the hallway, the player must use a nearby cube to block the laser pointing down the hallway. The player must then also use timing to traverse through the intermittent lasers going across. Past this, the player can press a button to open a future door. There are also security cameras which must be avoided in order for the enemy to not be summoned. The player still comes across patrolling enemies, which can be distracted by deploying a hologram. The player can then move on to press another button and open the door to the platform containing the objective orb.
+How to play:
+The game is played by manuevering the player through the level from the start point to the green orb which marks the end point. 
+The player can be moved with arrow keys or wasd. 
+Sprint is activated with the shift key. 
+The E button deploys a hologram. 
+F interacts with the environment.
 
-We primarily ran into issues in implementing our player animation when accounting for a camera. We were able to create a BlendTree root motion character, however its rotation logic was not compatible with what we had in mind for our camera control by the user, so our current version does not have player rotation animation well implemented. We also think that work can be done to make the level feel more cohesive and realistic aesthetically, and plan to incorporate more audio cues and potentially music for an immersive experience.
+
+Game Description:
+Throughout the game, the player will encounter obstacles which impede their progress. 
+Robot guards patrol the levels, blocking access to sections of each level. 
+Lasers trigger an alarm, which will summon a nearby guard to investigate. 
+If a guard sees a player, it will persue them. Their FOV is indicated by a vision cone on the ground.
+The player can press E to activate their Hologram, which will distract a guard for a short time.
+The player can make use of physics-based crates to obstruct lasers and progress through the level.
+There are buttons which open doors within the levels, requiring planning and stealth to successfully complete each level.
+Each level contains a green orb, which will advance the player to the next level.
+
+Technological requirements:
+- The player is a humanoid skeleton with BlendTree animations. The player is always centered in the camera and can always be controlled, except in menus.
+- The guards use a NavMesh to navigate their patrol routes. If they are alerted by an alarm or see a player, they will change states and instead investigate. Avoiding the guards is a core gameplay element
+- The transparent crates are Physics-based RigidBodies. They must be pushed into place to avoid lasers or the line of sight of a guard.
+- The levels require planning and decision making, creating interesting choices to make.
+- The pause menu allows allows the player to return to the title screen or check the controls.
+
+
+Problem areas:
+- The character's control scheme and animations are still a bit weak. It is difficult to strafe, making crate pushing difficult.
+- We were not able to include many sound effects in the game, such as footsteps or crate collisions.
+- The level design is not very consistent. Some levels are tight and contained, while others are wide opened. Additionally, the environment art (like the skyboxes) is inconsistent.
+
 
 Manifest:
 
 Zach Slaton
+Code:
 - Hologram (HologramController.cs)
 - 3rd Person Camera Control (ThirdPersonCamera.cs)
 - Doors (DoorController.cs)
-- Button Interactivity (DoorButtonController.cs, InteractableIndicator.cs)
+- Button Interactivity (DoorButtonController.cs, InteractableIndicator.cs, EndButtonController.cs)
 - Information Monitor (MoniorController.cs, MoniorTrigger.cs)
 - Vision Cones (VisionCone.cs)
+- KillPlane (KillPlaneController.cs)
+- DeathScreen/EndScreen Fade in (DeathScreen.cs)
+Assets:
+- 2nd Level design and layout (ZachLevel)
+- Final level (gold button) design and layout (EndGame)
+- Button Model + Animations
+- Monitor Model
+- Exclamation point model + animation
+- Door model + animation
+- 2nd background music song
 
 Luting Wang
-- Enemy Model
+Code:
 - Enemy Animation (EnemyController.cs, Animation.cs)
 - Player Controller (PlayerController.cs)
-- Level Assets
+- Enemy Button (EnemyButtonController.cs, EnemyButtonTriggerController.cs)
+Assets:
+- 1st level design and layout (Luting_map)
+- Level Assets (Walls, Crates, Lamps) (3rd party)
+- Enemy Model (Robot) (3rd Party)
+- City skybox (3rd party)
 
 William Greene
+Code:
 - Lasers (LevelLaser.cs)
 - Security Cameras (CameraDetection.cs)
 - Enemy Alarm (EnemyController.cs)
 - UI Scripts (GameQuitter.cs, GameStarter.cs, PauseMenuToggle.cs)
+Assets:
+- 3rd Level design and layout (Will_map)
+- Security camera model 
+- Ladder model
+- First background music song (3rd party)
 
 Sagar Singhal
-- Player Model 
+Code:
 - Player Animation (ExoGray_Controller, PlayerController.cs)
 - Enemy State Machine AI / NavMesh (EnemyController.cs)
 - End Condition Orb (EndCollision.cs)
+Assets:
+- 4th Level design and layout (Sagar_Level)
+- Player Model (3rd party)
+- Hologram model (3rd party)
+- End level orb (3rd party)
+
+
+Special thanks to Wyatt Kopcha for making one of the background music tracks.
+
+
+3rd party assets:
+Level assets - Model + Material for floors,walls, pillars, lamps
+Guard model - robot orb
+Player model - Exo Gray
+End level orb - Orb asset package
+Skyboxes - Vast Outer Space asset package
+Skyboxes - Warped City asset package 
+First background music track (https://freesound.org/people/Bertsz/sounds/672784/)
 
