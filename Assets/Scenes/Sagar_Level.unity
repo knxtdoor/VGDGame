@@ -3692,7 +3692,7 @@ PrefabInstance:
     - target: {fileID: 3658377684932996262, guid: 2e08a6e3203117b49bf593bf5511dfb6, type: 3}
       propertyPath: deathScreen
       value: 
-      objectReference: {fileID: 0}
+      objectReference: {fileID: 1356820576}
     - target: {fileID: 3658377686447642242, guid: 2e08a6e3203117b49bf593bf5511dfb6, type: 3}
       propertyPath: player
       value: 
