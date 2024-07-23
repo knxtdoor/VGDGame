@@ -47,6 +47,7 @@ Code:
 - Vision Cones (VisionCone.cs)
 - KillPlane (KillPlaneController.cs)
 - DeathScreen/EndScreen Fade in (DeathScreen.cs)
+- Credits screen (CreditsScreenController.cs)
 Assets:
 - 2nd Level design and layout (ZachLevel)
 - Final level (gold button) design and layout (EndGame)
@@ -95,11 +96,12 @@ Special thanks to Wyatt Kopcha for making one of the background music tracks.
 
 
 3rd party assets:
-Level assets - Model + Material for floors,walls, pillars, lamps
-Guard model - robot orb
-Player model - Exo Gray
-End level orb - Orb asset package
-Skyboxes - Vast Outer Space asset package
-Skyboxes - Warped City asset package 
+Level assets - Model + Material for floors,walls, pillars, lamps - https://assetstore.unity.com/packages/3d/environments/sci-fi/voxel-scifi-environment-free-version-101492
+Guard model - robot orb - https://assetstore.unity.com/packages/3d/characters/robots/robot-sphere-136226
+Player model - Exo Gray - Find on Unity store
+End level orb - Orb asset package - Find on Unity store
+Skyboxes - Vast Outer Space asset package - Find on unity store
+Skyboxes - Warped City asset package - https://assetstore.unity.com/packages/2d/environments/warped-city-assets-pack-138128 
 First background music track (https://freesound.org/people/Bertsz/sounds/672784/)
+
 
